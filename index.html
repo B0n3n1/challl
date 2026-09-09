@@ -11,9 +11,11 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>100 отжиманий</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
  --bg:#f6f0e7;--paper:#fffdf9;--ink:#272521;--muted:#7b756c;--line:#e7ddd0;
@@ -103,23 +105,35 @@ input[type=color]{width:48px;height:42px;border:1px solid var(--line);border-rad
 .previewBox img{width:75%;height:75%;object-fit:contain}
 .toast{position:fixed;z-index:90;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:#272521;color:#fff;padding:10px 15px;border-radius:99px;font-size:13px;transition:.2s;pointer-events:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
-@media(min-width:850px){.grid{grid-template-columns:repeat(10,1fr)}}
+
+@media(min-width:850px){
+ .grid{grid-template-columns:repeat(10,1fr)}
+}
+
 @media(max-width:620px){
- .top{display:block}.topBtns{justify-content:flex-start;margin-top:13px}
- .grid{gap:8px}.day{border-radius:17px}.dayNum{font-size:14px}
- .gridHint{display:none}.people{grid-template-columns:1fr}
+ .top{display:block}
+ .topBtns{justify-content:flex-start;margin-top:13px}
+ .grid{gap:8px}
+ .day{border-radius:17px}
+ .dayNum{font-size:14px}
+ .gridHint{display:none}
+ .people{grid-template-columns:1fr}
  .join{display:grid;grid-template-columns:1fr auto}
 }
 </style>
 </head>
+
 <body>
+
 <div class="app">
+
   <header class="top">
     <div>
       <div class="kicker">ваш личный челлендж</div>
       <h1 id="title">100 ОТЖИМАНИЙ</h1>
       <div class="lead">30 дней. Сделал свои 100 — отметил день. Ничего больше не нужно.</div>
     </div>
+
     <div class="topBtns">
       <button class="btn" id="drawOpen">✦ Свой знак</button>
       <button class="btn" id="settingsOpen">Настройки</button>
@@ -128,11 +142,19 @@ input[type=color]{width:48px;height:42px;border:1px solid var(--line);border-rad
 
   <section class="card progress">
     <div class="progressTop">
-      <div class="count"><span id="done">0</span> / <span id="total">30</span></div>
+      <div class="count">
+        <span id="done">0</span> / <span id="total">30</span>
+      </div>
       <div class="percent" id="pct">0%</div>
     </div>
-    <div class="bar"><span id="bar"></span></div>
-    <div class="small">Выполненные дни сохраняются автоматически на этом устройстве.</div>
+
+    <div class="bar">
+      <span id="bar"></span>
+    </div>
+
+    <div class="small">
+      Выполненные дни сохраняются автоматически на этом устройстве.
+    </div>
   </section>
 
   <section class="card gridCard">
@@ -140,114 +162,284 @@ input[type=color]{width:48px;height:42px;border:1px solid var(--line);border-rad
       <div class="gridTitle">Календарь</div>
       <div class="gridHint">Нажми на день после тренировки</div>
     </div>
+
     <div id="grid" class="grid"></div>
   </section>
 
   <section class="card modeCard">
+
     <div class="modeRow">
       <div>
         <div class="modeName">Мы вдвоём</div>
-        <div class="modeText">Один общий код комнаты — и вы видите прогресс друг друга.</div>
+        <div class="modeText">
+          Один общий код комнаты — и вы видите прогресс друг друга.
+        </div>
       </div>
-      <label class="switch"><input id="duoToggle" type="checkbox"><span class="slider"></span></label>
+
+      <label class="switch">
+        <input id="duoToggle" type="checkbox">
+        <span class="slider"></span>
+      </label>
     </div>
+
     <div id="duoPanel" class="duo">
+
       <div class="join">
-        <input class="input" id="roomInput" maxlength="20" placeholder="Введите код комнаты">
-        <button class="btn dark" id="joinBtn">Войти</button>
+        <input
+          class="input"
+          id="roomInput"
+          maxlength="20"
+          placeholder="Введите код комнаты"
+        >
+
+        <button class="btn dark" id="joinBtn">
+          Войти
+        </button>
       </div>
+
       <div class="actions">
-        <button class="btn" id="createBtn">Создать новую комнату</button>
-        <button class="btn" id="copyBtn" style="display:none">Скопировать код</button>
+        <button class="btn" id="createBtn">
+          Создать новую комнату
+        </button>
+
+        <button
+          class="btn"
+          id="copyBtn"
+          style="display:none"
+        >
+          Скопировать код
+        </button>
       </div>
-      <div id="roomBox" style="display:none" class="room">
-        <div><div class="small">Код комнаты</div><div id="roomCode" class="code"></div></div>
-        <div id="cloudStatus" class="status">Подключение…</div>
+
+      <div
+        id="roomBox"
+        style="display:none"
+        class="room"
+      >
+        <div>
+          <div class="small">Код комнаты</div>
+          <div id="roomCode" class="code"></div>
+        </div>
+
+        <div id="cloudStatus" class="status">
+          Подключение…
+        </div>
       </div>
+
       <div id="people" class="people"></div>
+
     </div>
   </section>
 
   <section class="actions">
-    <button class="btn" id="resetBtn">Сбросить мой прогресс</button>
-    <button class="btn" id="installBtn">Как установить на iPhone</button>
+    <button class="btn" id="resetBtn">
+      Сбросить мой прогресс
+    </button>
+
+    <button class="btn" id="installBtn">
+      Как установить на iPhone
+    </button>
   </section>
 
-  <footer>Открой эту страницу в Safari и выбери «Поделиться → На экран Домой».</footer>
+  <footer>
+    Открой эту страницу в Safari и выбери «Поделиться → На экран Домой».
+  </footer>
+
 </div>
+
 
 <div class="modalBack" id="settingsModal">
   <div class="modal">
-    <div class="modalHead"><h2>Настройки</h2><button class="close" data-close="settingsModal">×</button></div>
+
+    <div class="modalHead">
+      <h2>Настройки</h2>
+      <button class="close" data-close="settingsModal">×</button>
+    </div>
+
     <div class="form">
-      <div class="field"><label>Название</label><input class="input" id="titleInput" maxlength="40"></div>
-      <div class="field"><label>Количество дней</label><input class="input" id="daysInput" type="number" min="1" max="365"></div>
-      <div class="field"><label>Форма дней</label>
-        <select class="input" id="shapeSelect"><option value="circle">Круг</option><option value="square">Квадрат</option><option value="soft">Скруглённый квадрат</option></select>
+
+      <div class="field">
+        <label>Название</label>
+        <input class="input" id="titleInput" maxlength="40">
       </div>
-      <div class="field"><label>Цвет выполненного</label><div class="color"><input id="doneColor" type="color"><span class="small">Заполненные дни</span></div></div>
-      <div class="field"><label>Цвет невыполненного</label><div class="color"><input id="pendingColor" type="color"><span class="small">Будущие дни</span></div></div>
-      <div class="actions"><button class="btn dark" data-close="settingsModal">Готово</button></div>
+
+      <div class="field">
+        <label>Количество дней</label>
+        <input
+          class="input"
+          id="daysInput"
+          type="number"
+          min="1"
+          max="365"
+        >
+      </div>
+
+      <div class="field">
+        <label>Форма дней</label>
+
+        <select class="input" id="shapeSelect">
+          <option value="circle">Круг</option>
+          <option value="square">Квадрат</option>
+          <option value="soft">Скруглённый квадрат</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Цвет выполненного</label>
+
+        <div class="color">
+          <input id="doneColor" type="color">
+          <span class="small">Заполненные дни</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Цвет невыполненного</label>
+
+        <div class="color">
+          <input id="pendingColor" type="color">
+          <span class="small">Будущие дни</span>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button
+          class="btn dark"
+          data-close="settingsModal"
+        >
+          Готово
+        </button>
+      </div>
+
     </div>
   </div>
 </div>
 
+
 <div class="modalBack" id="drawModal">
   <div class="modal">
-    <div class="modalHead"><h2>Нарисуй свой знак</h2><button class="close" data-close="drawModal">×</button></div>
-    <p class="small">Теперь знак не строится из случайных прямых: готовые формы — настоящие аккуратные SVG-фигуры. Свой рисунок тоже сглаживается и сохраняет округлые изгибы.</p>
+
+    <div class="modalHead">
+      <h2>Нарисуй свой знак</h2>
+      <button class="close" data-close="drawModal">×</button>
+    </div>
+
+    <p class="small">
+      Теперь знак не строится из случайных прямых: готовые формы —
+      настоящие аккуратные SVG-фигуры. Свой рисунок тоже сглаживается
+      и сохраняет округлые изгибы.
+    </p>
+
     <div class="presets">
       <button class="preset" data-preset="heart">♡ Сердце</button>
       <button class="preset" data-preset="star">☆ Звезда</button>
       <button class="preset" data-preset="flower">✿ Цветок</button>
       <button class="preset" data-preset="lightning">ϟ Молния</button>
     </div>
-    <div class="drawArea"><canvas id="canvas"></canvas></div>
+
+    <div class="drawArea">
+      <canvas id="canvas"></canvas>
+    </div>
+
     <div class="actions">
       <button class="btn" id="clear">Очистить</button>
       <button class="btn dark" id="save">Сохранить знак</button>
     </div>
+
   </div>
 </div>
 
+
 <div class="toast" id="toast"></div>
 
+
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getDatabase, ref, set, update, onValue, get } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+  getDatabase,
+  ref,
+  set,
+  update,
+  onValue,
+  get
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+import {
+  getAuth,
+  signInAnonymously
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
 import firebaseConfig from "./firebase-config.js";
 
-let db = null;
-let auth = null;
-let cloudEnabled = false;
+
+/* =========================
+   FIREBASE
+========================= */
+
+let db=null;
+let auth=null;
+let cloudEnabled=false;
+let firebaseReady=null;
 
 async function initFirebase(){
-  try {
-    if (firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId) {
-      const app = initializeApp(firebaseConfig);
 
-      auth = getAuth(app);
-      db = getDatabase(app);
+  try{
 
-      await signInAnonymously(auth);
+    if(
+      firebaseConfig &&
+      firebaseConfig.apiKey &&
+      firebaseConfig.projectId
+    ){
 
-      cloudEnabled = true;
+      const app=initializeApp(firebaseConfig);
 
-      console.log(
-        "Firebase Anonymous Auth OK:",
-        auth.currentUser?.uid
-      );
+      auth=getAuth(app);
+      db=getDatabase(app);
+
+      const credential=
+        await signInAnonymously(auth);
+
+      if(credential?.user){
+
+        cloudEnabled=true;
+
+        console.log(
+          "Firebase Anonymous Auth OK:",
+          credential.user.uid
+        );
+
+      }
+
     }
-  } catch(e) {
-    console.warn("Firebase disabled", e);
-    cloudEnabled = false;
+
+  }catch(e){
+
+    console.warn(
+      "Firebase disabled",
+      e
+    );
+
+    cloudEnabled=false;
+
   }
+
 }
 
-await initFirebase();
+firebaseReady=initFirebase();
+
+await firebaseReady;
+
+
+/* =========================
+   STATE
+========================= */
 
 const KEY="pushups-v4";
+
 const defaults={
   title:"100 ОТЖИМАНИЙ",
   days:30,
@@ -262,29 +454,62 @@ const defaults={
 
 let state={
   ...defaults,
-  ...(JSON.parse(localStorage.getItem(KEY)||"{}"))
+  ...(JSON.parse(
+    localStorage.getItem(KEY)||"{}"
+  ))
 };
 
-state.done=Array.isArray(state.done)?state.done:[];
+state.done=
+  Array.isArray(state.done)
+    ?state.done
+    :[];
+
 
 const $=s=>document.querySelector(s);
 
+
+/* =========================
+   LOCAL STORAGE
+========================= */
+
 function save(){
-  localStorage.setItem(KEY,JSON.stringify(state));
+
+  localStorage.setItem(
+    KEY,
+    JSON.stringify(state)
+  );
+
 }
 
+
+/* =========================
+   TOAST
+========================= */
+
 function toast(s){
+
   const t=$("#toast");
+
   t.textContent=s;
+
   t.classList.add("show");
+
   clearTimeout(window._toast);
+
   window._toast=setTimeout(
     ()=>t.classList.remove("show"),
     1800
   );
+
 }
 
+
+/* =========================
+   THEME
+========================= */
+
 function css(){
+
   document.documentElement.style.setProperty(
     "--accent",
     state.doneColor
@@ -294,61 +519,95 @@ function css(){
     "--pending",
     state.pendingColor
   );
+
 }
 
+
 function shapeRadius(){
+
   return state.shape==="circle"
     ?"50%"
     :state.shape==="square"
       ?"8px"
       :"20px";
+
 }
 
+
+/* =========================
+   RENDER
+========================= */
+
 function render(){
+
   css();
 
-  $("#title").textContent=state.title||defaults.title;
-  $("#total").textContent=state.days;
-  $("#done").textContent=state.done.length;
+  $("#title").textContent=
+    state.title||defaults.title;
+
+  $("#total").textContent=
+    state.days;
+
+  $("#done").textContent=
+    state.done.length;
 
   const pct=Math.round(
     state.done.length/state.days*100
   );
 
-  $("#pct").textContent=pct+"%";
-  $("#bar").style.width=pct+"%";
+  $("#pct").textContent=
+    pct+"%";
+
+  $("#bar").style.width=
+    pct+"%";
 
   const grid=$("#grid");
+
   grid.innerHTML="";
 
-  const doneSet=new Set(state.done);
+  const doneSet=
+    new Set(state.done);
 
-  for(let d=1;d<=state.days;d++){
-    const b=document.createElement("button");
+  for(
+    let d=1;
+    d<=state.days;
+    d++
+  ){
+
+    const b=
+      document.createElement("button");
 
     b.className=
-      "day"+(doneSet.has(d)?" done":"");
+      "day"+
+      (doneSet.has(d)?" done":"");
 
-    b.style.borderRadius=shapeRadius();
+    b.style.borderRadius=
+      shapeRadius();
 
     if(state.customShape){
+
       b.innerHTML=`
         <img
           class="shapeImg"
           src="${state.customShape}"
           alt=""
         >
+
         <span class="dayMark">
           ${doneSet.has(d)?"✓":d}
         </span>
       `;
+
     }else{
+
       b.innerHTML=`
         <span class="dayNum">${d}</span>
+
         <span class="dayMark">
           ${doneSet.has(d)?"✓":""}
         </span>
       `;
+
     }
 
     b.addEventListener(
@@ -357,19 +616,34 @@ function render(){
     );
 
     grid.appendChild(b);
+
   }
+
 }
 
+
+/* =========================
+   TOGGLE DAY
+========================= */
+
 async function toggle(d){
-  const i=state.done.indexOf(d);
+
+  const i=
+    state.done.indexOf(d);
 
   if(i>=0){
+
     state.done.splice(i,1);
+
   }else{
+
     state.done.push(d);
+
   }
 
-  state.done.sort((a,b)=>a-b);
+  state.done.sort(
+    (a,b)=>a-b
+  );
 
   save();
   render();
@@ -379,182 +653,305 @@ async function toggle(d){
     auth?.currentUser &&
     state.room
   ){
+
     await publishMine();
+
   }
+
 }
+
+
+/* =========================
+   MODALS
+========================= */
 
 function open(id){
+
   $("#"+id).classList.add("open");
+
 }
+
 
 function close(id){
+
   $("#"+id).classList.remove("open");
+
 }
 
+
 $("#settingsOpen").onclick=()=>{
+
   syncForm();
+
   open("settingsModal");
+
 };
 
+
 $("#drawOpen").onclick=()=>{
+
   open("drawModal");
-  setTimeout(resizeCanvas,20);
+
+  setTimeout(
+    resizeCanvas,
+    20
+  );
+
 };
+
 
 document
   .querySelectorAll("[data-close]")
   .forEach(
-    b=>b.onclick=()=>close(b.dataset.close)
+    b=>b.onclick=
+      ()=>close(b.dataset.close)
   );
+
 
 document
   .querySelectorAll(".modalBack")
   .forEach(
     m=>m.onclick=e=>{
+
       if(e.target===m)
         m.classList.remove("open");
+
     }
   );
 
+
+/* =========================
+   SETTINGS
+========================= */
+
 function syncForm(){
-  $("#titleInput").value=state.title;
-  $("#daysInput").value=state.days;
-  $("#shapeSelect").value=state.shape;
-  $("#doneColor").value=state.doneColor;
-  $("#pendingColor").value=state.pendingColor;
+
+  $("#titleInput").value=
+    state.title;
+
+  $("#daysInput").value=
+    state.days;
+
+  $("#shapeSelect").value=
+    state.shape;
+
+  $("#doneColor").value=
+    state.doneColor;
+
+  $("#pendingColor").value=
+    state.pendingColor;
+
 }
 
+
 $("#titleInput").oninput=e=>{
-  state.title=e.target.value||defaults.title;
+
+  state.title=
+    e.target.value||
+    defaults.title;
+
   save();
   render();
+
 };
 
-$("#daysInput").onchange=e=>{
-  state.days=Math.max(
-    1,
-    Math.min(
-      365,
-      +e.target.value||30
-    )
-  );
 
-  state.done=state.done.filter(
-    x=>x<=state.days
-  );
+$("#daysInput").onchange=e=>{
+
+  state.days=
+    Math.max(
+      1,
+      Math.min(
+        365,
+        +e.target.value||30
+      )
+    );
+
+  state.done=
+    state.done.filter(
+      x=>x<=state.days
+    );
 
   save();
   render();
 
   if(state.room)
     publishMine();
+
 };
+
 
 $("#shapeSelect").onchange=e=>{
-  state.shape=e.target.value;
+
+  state.shape=
+    e.target.value;
+
   save();
   render();
+
 };
+
 
 $("#doneColor").oninput=e=>{
-  state.doneColor=e.target.value;
+
+  state.doneColor=
+    e.target.value;
+
   save();
   render();
+
 };
+
 
 $("#pendingColor").oninput=e=>{
-  state.pendingColor=e.target.value;
+
+  state.pendingColor=
+    e.target.value;
+
   save();
   render();
+
 };
 
+
 $("#resetBtn").onclick=()=>{
+
   if(
-    confirm("Сбросить все мои выполненные дни?")
+    confirm(
+      "Сбросить все мои выполненные дни?"
+    )
   ){
+
     state.done=[];
+
     save();
     render();
 
     if(state.room)
       publishMine();
 
-    toast("Прогресс сброшен");
+    toast(
+      "Прогресс сброшен"
+    );
+
   }
+
 };
 
+
 $("#installBtn").onclick=()=>{
+
   alert(
     "На iPhone: открой сайт в Safari → нажми «Поделиться» → «На экран Домой». После этого приложение будет открываться отдельным окном."
   );
+
 };
 
+
+/* =========================
+   DRAWING
+========================= */
+
 const canvas=$("#canvas");
-const ctx=canvas.getContext("2d");
+
+const ctx=
+  canvas.getContext("2d");
 
 let pts=[];
 let drawing=false;
 
-function resizeCanvas(){
-  const r=canvas.getBoundingClientRect();
-  const dpr=Math.min(
-    3,
-    devicePixelRatio||1
-  );
 
-  canvas.width=r.width*dpr;
-  canvas.height=r.height*dpr;
+function resizeCanvas(){
+
+  const r=
+    canvas.getBoundingClientRect();
+
+  const dpr=
+    Math.min(
+      3,
+      devicePixelRatio||1
+    );
+
+  canvas.width=
+    r.width*dpr;
+
+  canvas.height=
+    r.height*dpr;
 
   ctx.setTransform(
     dpr,0,0,dpr,0,0
   );
 
   drawPoints(pts);
+
 }
 
-function p(e){
-  const r=canvas.getBoundingClientRect();
 
-  return {
+function p(e){
+
+  const r=
+    canvas.getBoundingClientRect();
+
+  return{
     x:e.clientX-r.left,
     y:e.clientY-r.top
   };
+
 }
+
 
 function begin(e){
+
   e.preventDefault();
+
   drawing=true;
+
   pts=[p(e)];
+
   drawPoints(pts);
+
 }
 
+
 function move(e){
+
   if(!drawing)return;
 
   e.preventDefault();
 
   const q=p(e);
+
   const z=pts.at(-1);
 
   if(
-    !z ||
+    !z||
     Math.hypot(
       q.x-z.x,
       q.y-z.y
     )>2.5
   ){
+
     pts.push(q);
+
     drawPoints(pts);
+
   }
+
 }
 
+
 function end(){
+
   if(!drawing)return;
 
   drawing=false;
+
   pts=smooth(pts);
+
   drawPoints(pts);
+
 }
+
 
 canvas.addEventListener(
   "pointerdown",
@@ -581,8 +978,11 @@ canvas.addEventListener(
   end
 );
 
+
 function smooth(a){
-  if(a.length<5)return a;
+
+  if(a.length<5)
+    return a;
 
   const out=[a[0]];
 
@@ -591,7 +991,9 @@ function smooth(a){
     i<a.length-1;
     i++
   ){
+
     out.push({
+
       x:
         a[i].x*.62+
         (a[i-1].x+a[i+1].x)*.19,
@@ -599,16 +1001,22 @@ function smooth(a){
       y:
         a[i].y*.62+
         (a[i-1].y+a[i+1].y)*.19
+
     });
+
   }
 
   out.push(a.at(-1));
 
   return out;
+
 }
 
+
 function drawPoints(a){
-  const r=canvas.getBoundingClientRect();
+
+  const r=
+    canvas.getBoundingClientRect();
 
   ctx.clearRect(
     0,
@@ -617,14 +1025,22 @@ function drawPoints(a){
     r.height
   );
 
-  if(a.length<2)return;
+  if(a.length<2)
+    return;
 
-  ctx.strokeStyle="#272521";
+  ctx.strokeStyle=
+    "#272521";
+
   ctx.lineWidth=6;
-  ctx.lineCap="round";
-  ctx.lineJoin="round";
+
+  ctx.lineCap=
+    "round";
+
+  ctx.lineJoin=
+    "round";
 
   ctx.beginPath();
+
   ctx.moveTo(
     a[0].x,
     a[0].y
@@ -635,6 +1051,7 @@ function drawPoints(a){
     i<a.length-1;
     i++
   ){
+
     const m={
       x:(a[i].x+a[i+1].x)/2,
       y:(a[i].y+a[i+1].y)/2
@@ -646,9 +1063,11 @@ function drawPoints(a){
       m.x,
       m.y
     );
+
   }
 
-  const last=a.at(-1);
+  const last=
+    a.at(-1);
 
   ctx.lineTo(
     last.x,
@@ -656,38 +1075,57 @@ function drawPoints(a){
   );
 
   ctx.stroke();
+
 }
 
+
 function svgPath(points){
-  if(points.length<3)return null;
 
-  const xs=points.map(x=>x.x);
-  const ys=points.map(x=>x.y);
+  if(points.length<3)
+    return null;
 
-  const minX=Math.min(...xs);
-  const maxX=Math.max(...xs);
-  const minY=Math.min(...ys);
-  const maxY=Math.max(...ys);
+  const xs=
+    points.map(x=>x.x);
 
-  const w=Math.max(
-    1,
-    maxX-minX
-  );
+  const ys=
+    points.map(x=>x.y);
 
-  const h=Math.max(
-    1,
-    maxY-minY
-  );
+  const minX=
+    Math.min(...xs);
 
-  const norm=points.map(p=>({
-    x:
-      (p.x-minX+7)/
-      (w+14)*100,
+  const maxX=
+    Math.max(...xs);
 
-    y:
-      (p.y-minY+7)/
-      (h+14)*100
-  }));
+  const minY=
+    Math.min(...ys);
+
+  const maxY=
+    Math.max(...ys);
+
+  const w=
+    Math.max(
+      1,
+      maxX-minX
+    );
+
+  const h=
+    Math.max(
+      1,
+      maxY-minY
+    );
+
+  const norm=
+    points.map(p=>({
+
+      x:
+        (p.x-minX+7)/
+        (w+14)*100,
+
+      y:
+        (p.y-minY+7)/
+        (h+14)*100
+
+    }));
 
   let d=
     `M ${norm[0].x.toFixed(2)} ${norm[0].y.toFixed(2)}`;
@@ -697,17 +1135,26 @@ function svgPath(points){
     i<norm.length-1;
     i++
   ){
-    const p=norm[i];
-    const n=norm[i+1];
 
-    const mx=(p.x+n.x)/2;
-    const my=(p.y+n.y)/2;
+    const p=
+      norm[i];
+
+    const n=
+      norm[i+1];
+
+    const mx=
+      (p.x+n.x)/2;
+
+    const my=
+      (p.y+n.y)/2;
 
     d+=
       ` Q ${p.x.toFixed(2)} ${p.y.toFixed(2)} ${mx.toFixed(2)} ${my.toFixed(2)}`;
+
   }
 
-  const l=norm.at(-1);
+  const l=
+    norm.at(-1);
 
   d+=
     ` L ${l.x.toFixed(2)} ${l.y.toFixed(2)}`;
@@ -727,9 +1174,16 @@ function svgPath(points){
       />
     </svg>
   `;
+
 }
 
+
+/* =========================
+   PRESET SVG
+========================= */
+
 const presetSVG={
+
   heart:`
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
       <path
@@ -766,6 +1220,7 @@ const presetSVG={
         stroke-linecap="round"
         stroke-linejoin="round"
       />
+
       <circle
         cx="50"
         cy="50"
@@ -789,59 +1244,99 @@ const presetSVG={
       />
     </svg>
   `
+
 };
+
 
 document
   .querySelectorAll(".preset")
   .forEach(
     b=>b.onclick=()=>{
+
       const s=
-        presetSVG[b.dataset.preset];
+        presetSVG[
+          b.dataset.preset
+        ];
 
       state.customShape=
         "data:image/svg+xml;charset=UTF-8,"+
         encodeURIComponent(s);
 
       pts=[];
+
       drawPoints([]);
 
-      toast("Аккуратная форма выбрана");
+      toast(
+        "Аккуратная форма выбрана"
+      );
+
     }
   );
 
+
 $("#clear").onclick=()=>{
+
   pts=[];
+
   drawPoints([]);
+
 };
 
+
 $("#save").onclick=()=>{
+
   if(!state.customShape){
-    const s=svgPath(pts);
+
+    const s=
+      svgPath(pts);
 
     if(!s){
-      toast("Сначала нарисуй знак");
+
+      toast(
+        "Сначала нарисуй знак"
+      );
+
       return;
+
     }
 
     state.customShape=
       "data:image/svg+xml;charset=UTF-8,"+
       encodeURIComponent(s);
+
   }
 
   save();
+
   render();
+
   close("drawModal");
-  toast("Знак сохранён");
+
+  toast(
+    "Знак сохранён"
+  );
+
 };
+
+
+/* =========================
+   DUO MODE
+========================= */
 
 let roomUnsub=null;
 
+
 function roomCode(){
+
   return state.room;
+
 }
 
+
 function renderDuo(){
-  $("#duoToggle").checked=!!state.room;
+
+  $("#duoToggle").checked=
+    !!state.room;
 
   $("#duoPanel").classList.toggle(
     "open",
@@ -850,13 +1345,23 @@ function renderDuo(){
   );
 
   if(state.room){
-    $("#roomBox").style.display="flex";
-    $("#roomCode").textContent=state.room;
-    $("#copyBtn").style.display="inline-block";
+
+    $("#roomBox").style.display=
+      "flex";
+
+    $("#roomCode").textContent=
+      state.room;
+
+    $("#copyBtn").style.display=
+      "inline-block";
+
   }
+
 }
 
+
 $("#duoToggle").onchange=()=>{
+
   $("#duoPanel").classList.toggle(
     "open",
     $("#duoToggle").checked
@@ -866,39 +1371,54 @@ $("#duoToggle").onchange=()=>{
     $("#duoToggle").checked &&
     !cloudEnabled
   ){
+
     toast(
       "Для режима «Мы вдвоём» нужно подключить Firebase"
     );
+
   }
+
 };
 
+
 function randomCode(){
+
   return Math.random()
     .toString(36)
     .slice(2,8)
     .toUpperCase();
+
 }
 
-/* ВАЖНО:
-   Теперь идентификатор пользователя —
-   Firebase Anonymous Auth UID.
-*/
+
+/* Firebase UID */
 function myId(){
-  return auth?.currentUser?.uid || null;
+
+  return auth?.currentUser?.uid||null;
+
 }
+
+
+/* =========================
+   PUBLISH MY PROGRESS
+========================= */
 
 async function publishMine(){
+
   if(
-    !db ||
-    !auth?.currentUser ||
+    !db||
+    !auth?.currentUser||
     !state.room
   ){
+
     return;
+
   }
 
   const id=myId();
 
-  if(!id)return;
+  if(!id)
+    return;
 
   const personName=
     state.personName||
@@ -916,102 +1436,146 @@ async function publishMine(){
       updatedAt:Date.now()
     }
   );
+
 }
 
+
+/* =========================
+   WATCH ROOM
+========================= */
+
 function watchRoom(){
+
   if(roomUnsub)
     roomUnsub();
 
   if(
-    !db ||
-    !auth?.currentUser ||
+    !db||
+    !auth?.currentUser||
     !state.room
   ){
+
     return;
+
   }
 
-  roomUnsub=onValue(
-    ref(
-      db,
-      `rooms/${state.room}/people`
-    ),
-    snap=>{
-      const people=snap.val()||{};
-      const box=$("#people");
+  roomUnsub=
+    onValue(
+      ref(
+        db,
+        `rooms/${state.room}/people`
+      ),
+      snap=>{
 
-      box.innerHTML="";
+        const people=
+          snap.val()||{};
 
-      Object.entries(people)
-        .forEach(
-          ([id,p])=>{
-            const d=
-              Array.isArray(p.done)
-                ?p.done.length
-                :0;
+        const box=
+          $("#people");
 
-            const total=
-              p.days||
-              state.days;
+        box.innerHTML="";
 
-            const el=
-              document.createElement("div");
+        Object.entries(people)
+          .forEach(
+            ([id,p])=>{
 
-            el.className="person";
+              const d=
+                Array.isArray(p.done)
+                  ?p.done.length
+                  :0;
 
-            el.innerHTML=`
-              <div class="personName">
-                ${escapeHtml(
-                  p.name||"Участник"
-                )}
-              </div>
+              const total=
+                p.days||
+                state.days;
 
-              <div class="personScore">
-                ${d} / ${total}
-              </div>
+              const el=
+                document.createElement(
+                  "div"
+                );
 
-              <div class="small">
-                ${Math.round(
-                  d/total*100
-                )}% выполнено
-              </div>
-            `;
+              el.className=
+                "person";
 
-            box.appendChild(el);
-          }
-        );
+              el.innerHTML=`
 
-      $("#cloudStatus").textContent=
-        "Синхронизация включена";
-    }
-  );
+                <div class="personName">
+                  ${escapeHtml(
+                    p.name||
+                    "Участник"
+                  )}
+                </div>
+
+                <div class="personScore">
+                  ${d} / ${total}
+                </div>
+
+                <div class="small">
+                  ${Math.round(
+                    d/total*100
+                  )}% выполнено
+                </div>
+
+              `;
+
+              box.appendChild(el);
+
+            }
+          );
+
+        $("#cloudStatus").textContent=
+          "Синхронизация включена";
+
+      }
+    );
+
 }
 
+
 function escapeHtml(s){
+
   return String(s).replace(
     /[&<>"']/g,
     c=>({
+
       "&":"&amp;",
       "<":"&lt;",
       ">":"&gt;",
       "\"":"&quot;",
       "'":"&#39;"
+
     }[c])
   );
+
 }
 
+
+/* =========================
+   ENTER ROOM
+========================= */
+
 async function enterRoom(code){
+
+  if(firebaseReady)
+    await firebaseReady;
+
   if(!cloudEnabled){
+
     toast(
       "Сначала настрой Firebase"
     );
+
     return;
+
   }
 
   if(!auth?.currentUser){
+
     toast(
-      "Firebase ещё выполняет вход"
+      "Не удалось войти в Firebase"
     );
+
     return;
+
   }
 
   code=
@@ -1024,66 +1588,122 @@ async function enterRoom(code){
       );
 
   if(code.length<4){
-    toast("Код слишком короткий");
+
+    toast(
+      "Код слишком короткий"
+    );
+
     return;
+
   }
 
   state.room=code;
 
   save();
+
   renderDuo();
 
   await publishMine();
+
   watchRoom();
 
-  toast("Комната подключена");
+  toast(
+    "Комната подключена"
+  );
+
 }
 
-$("#createBtn").onclick=async()=>{
-  if(!cloudEnabled){
-    toast(
-      "Firebase ещё не настроен"
-    );
-    return;
-  }
 
-  if(!auth?.currentUser){
-    toast(
-      "Firebase ещё выполняет вход"
-    );
-    return;
-  }
+/* =========================
+   CREATE ROOM
+========================= */
 
-  await enterRoom(
-    randomCode()
-  );
-};
+$("#createBtn").onclick=
+  async()=>{
+
+    if(firebaseReady)
+      await firebaseReady;
+
+    if(!cloudEnabled){
+
+      toast(
+        "Firebase ещё не настроен"
+      );
+
+      return;
+
+    }
+
+    if(!auth?.currentUser){
+
+      toast(
+        "Не удалось войти в Firebase"
+      );
+
+      return;
+
+    }
+
+    await enterRoom(
+      randomCode()
+    );
+
+  };
+
+
+/* =========================
+   JOIN ROOM
+========================= */
 
 $("#joinBtn").onclick=()=>{
+
   enterRoom(
     $("#roomInput").value
   );
+
 };
 
-$("#copyBtn").onclick=async()=>{
-  try{
-    await navigator.clipboard.writeText(
-      state.room
-    );
 
-    toast("Код скопирован");
-  }catch(e){
-    toast(
-      "Код: "+state.room
-    );
-  }
-};
+/* =========================
+   COPY ROOM CODE
+========================= */
+
+$("#copyBtn").onclick=
+  async()=>{
+
+    try{
+
+      await navigator.clipboard.writeText(
+        state.room
+      );
+
+      toast(
+        "Код скопирован"
+      );
+
+    }catch(e){
+
+      toast(
+        "Код: "+state.room
+      );
+
+    }
+
+  };
+
+
+/* =========================
+   START
+========================= */
 
 function applyTheme(){}
 
 render();
+
 renderDuo();
+
 syncForm();
+
 </script>
 
 </body>
