@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f0e7">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="100 Push-ups">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>100 отжиманий</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#f6f0e7;--paper:#fffdf9;--ink:#272521;--muted:#7b756c;--line:#e7ddd0;
+ --accent:#718b68;--accent2:#a96d50;--pending:#eee7dd;--shadow:0 18px 55px rgba(73,55,35,.09)
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{background:var(--bg);scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"DM Sans",sans-serif;min-height:100vh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:980px;margin:auto;padding:24px 16px 42px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}
+.kicker{text-transform:uppercase;letter-spacing:.16em;font-size:11px;font-weight:800;color:var(--muted)}
+h1{font-family:"Playfair Display",serif;font-size:clamp(37px,10vw,66px);line-height:.98;margin:8px 0 9px;letter-spacing:-.045em}
+.lead{color:var(--muted);font-size:15px;line-height:1.5;max-width:650px}
+.topBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.btn{border:1px solid var(--line);background:rgba(255,255,255,.7);color:var(--ink);border-radius:14px;padding:11px 14px;font-weight:600}
+.btn:active{transform:scale(.98)}
+.btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}
+.progress{padding:18px 18px 16px;margin-bottom:15px}
+.progressTop{display:flex;align-items:end;justify-content:space-between}
+.count{font-family:"Manrope",sans-serif;font-size:29px;font-weight:800;letter-spacing:-.04em}
+.percent{font-size:14px;color:var(--muted);font-weight:800}
+.bar{height:9px;background:#ece3d7;border-radius:99px;margin:12px 0 7px;overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .3s}
+.gridCard{padding:17px}
+.gridHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
+.gridTitle{font-family:"Playfair Display",serif;font-size:24px}
+.gridHint{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.day{
+  position:relative;aspect-ratio:1;border:1px solid #dfd4c5;background:var(--pending);
+  border-radius:20px;display:flex;align-items:center;justify-content:center;color:#5f5a52;
+  padding:7px;transition:transform .14s,background .2s,border-color .2s;overflow:hidden
+}
+.day:active{transform:scale(.94)}
+.day.done{background:var(--accent);border-color:var(--accent);color:white}
+.dayNum{font-family:"Manrope",sans-serif;font-weight:800;font-size:16px;z-index:2}
+.day.done .dayNum{display:none}
+.dayMark{position:absolute;right:8px;bottom:6px;font-size:13px;font-weight:800;z-index:3}
+.shapeImg{width:70%;height:70%;object-fit:contain}
+.day.done .shapeImg{filter:brightness(0) invert(1)}
+.modeCard{margin-top:15px;padding:17px}
+.modeRow{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.modeName{font-family:"Playfair Display",serif;font-size:23px}
+.modeText{color:var(--muted);font-size:13px;margin-top:4px;line-height:1.45}
+.switch{position:relative;width:52px;height:30px;flex:none}
+.switch input{display:none}
+.slider{position:absolute;inset:0;border-radius:99px;background:#dcd3c7;transition:.2s}
+.slider:before{content:"";position:absolute;width:24px;height:24px;left:3px;top:3px;border-radius:50%;background:white;box-shadow:0 2px 6px #0002;transition:.2s}
+.switch input:checked+.slider{background:var(--accent)}
+.switch input:checked+.slider:before{transform:translateX(22px)}
+.duo{display:none;margin-top:14px}
+.duo.open{display:block}
+.join{display:flex;gap:8px}
+.join input{flex:1;min-width:0}
+.input{border:1px solid var(--line);background:#fffaf4;border-radius:13px;padding:12px 13px;outline:none;color:var(--ink)}
+.input:focus{border-color:var(--accent)}
+.room{background:#f2eadf;border-radius:15px;padding:12px;margin-top:10px;font-size:13px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.code{font-family:"Manrope",monospace;font-weight:800;letter-spacing:.12em;font-size:18px}
+.status{color:var(--muted);font-size:12px}
+.people{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.person{border:1px solid var(--line);border-radius:17px;padding:13px;background:#fffaf4}
+.personName{font-weight:800}
+.personScore{font-family:"Manrope";font-size:22px;font-weight:800;margin-top:3px}
+.small{font-size:12px;color:var(--muted)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+footer{color:var(--muted);font-size:12px;line-height:1.5;text-align:center;padding:20px 10px}
+.modalBack{display:none;position:fixed;z-index:50;inset:0;background:#28251f88;align-items:flex-end;padding:10px}
+.modalBack.open{display:flex}
+.modal{width:min(700px,100%);max-height:93vh;overflow:auto;background:var(--paper);border-radius:27px;padding:19px;box-shadow:0 30px 100px #0004}
+.modalHead{display:flex;justify-content:space-between;align-items:center}
+.modal h2{font-family:"Playfair Display";font-size:29px;margin:0}
+.close{width:38px;height:38px;border-radius:50%;background:#f0e8de;font-size:21px}
+.form{display:grid;gap:13px;margin-top:15px}
+label{font-size:13px;font-weight:800;color:#5f5a52}
+.field{display:grid;gap:7px}
+.color{display:flex;gap:9px;align-items:center}
+input[type=color]{width:48px;height:42px;border:1px solid var(--line);border-radius:11px;padding:3px;background:#fff}
+.drawArea{background:#f2eadf;border:1px solid var(--line);border-radius:19px;padding:9px;margin-top:13px}
+#canvas{display:block;width:100%;height:330px;background:#fffdf9;border-radius:13px;touch-action:none}
+.presets{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0}
+.preset{background:#f0e8de;border:1px solid var(--line);border-radius:999px;padding:8px 11px}
+.previewLine{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12px}
+.previewBox{width:60px;height:60px;border-radius:15px;background:var(--pending);display:flex;align-items:center;justify-content:center}
+.previewBox img{width:75%;height:75%;object-fit:contain}
+.toast{position:fixed;z-index:90;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:#272521;color:#fff;padding:10px 15px;border-radius:99px;font-size:13px;transition:.2s;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(min-width:850px){.grid{grid-template-columns:repeat(10,1fr)}}
+@media(max-width:620px){
+ .top{display:block}.topBtns{justify-content:flex-start;margin-top:13px}
+ .grid{gap:8px}.day{border-radius:17px}.dayNum{font-size:14px}
+ .gridHint{display:none}.people{grid-template-columns:1fr}
+ .join{display:grid;grid-template-columns:1fr auto}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div>
+      <div class="kicker">ваш личный челлендж</div>
+      <h1 id="title">100 ОТЖИМАНИЙ</h1>
+      <div class="lead">30 дней. Сделал свои 100 — отметил день. Ничего больше не нужно.</div>
+    </div>
+    <div class="topBtns">
+      <button class="btn" id="drawOpen">✦ Свой знак</button>
+      <button class="btn" id="settingsOpen">Настройки</button>
+    </div>
+  </header>
+
+  <section class="card progress">
+    <div class="progressTop">
+      <div class="count"><span id="done">0</span> / <span id="total">30</span></div>
+      <div class="percent" id="pct">0%</div>
+    </div>
+    <div class="bar"><span id="bar"></span></div>
+    <div class="small">Выполненные дни сохраняются автоматически на этом устройстве.</div>
+  </section>
+
+  <section class="card gridCard">
+    <div class="gridHead">
+      <div class="gridTitle">Календарь</div>
+      <div class="gridHint">Нажми на день после тренировки</div>
+    </div>
+    <div id="grid" class="grid"></div>
+  </section>
+
+  <section class="card modeCard">
+    <div class="modeRow">
+      <div>
+        <div class="modeName">Мы вдвоём</div>
+        <div class="modeText">Один общий код комнаты — и вы видите прогресс друг друга.</div>
+      </div>
+      <label class="switch"><input id="duoToggle" type="checkbox"><span class="slider"></span></label>
+    </div>
+    <div id="duoPanel" class="duo">
+      <div class="join">
+        <input class="input" id="roomInput" maxlength="20" placeholder="Введите код комнаты">
+        <button class="btn dark" id="joinBtn">Войти</button>
+      </div>
+      <div class="actions">
+        <button class="btn" id="createBtn">Создать новую комнату</button>
+        <button class="btn" id="copyBtn" style="display:none">Скопировать код</button>
+      </div>
+      <div id="roomBox" style="display:none" class="room">
+        <div><div class="small">Код комнаты</div><div id="roomCode" class="code"></div></div>
+        <div id="cloudStatus" class="status">Подключение…</div>
+      </div>
+      <div id="people" class="people"></div>
+    </div>
+  </section>
+
+  <section class="actions">
+    <button class="btn" id="resetBtn">Сбросить мой прогресс</button>
+    <button class="btn" id="installBtn">Как установить на iPhone</button>
+  </section>
+
+  <footer>Открой эту страницу в Safari и выбери «Поделиться → На экран Домой».</footer>
+</div>
+
+<div class="modalBack" id="settingsModal">
+  <div class="modal">
+    <div class="modalHead"><h2>Настройки</h2><button class="close" data-close="settingsModal">×</button></div>
+    <div class="form">
+      <div class="field"><label>Название</label><input class="input" id="titleInput" maxlength="40"></div>
+      <div class="field"><label>Количество дней</label><input class="input" id="daysInput" type="number" min="1" max="365"></div>
+      <div class="field"><label>Форма дней</label>
+        <select class="input" id="shapeSelect"><option value="circle">Круг</option><option value="square">Квадрат</option><option value="soft">Скруглённый квадрат</option></select>
+      </div>
+      <div class="field"><label>Цвет выполненного</label><div class="color"><input id="doneColor" type="color"><span class="small">Заполненные дни</span></div></div>
+      <div class="field"><label>Цвет невыполненного</label><div class="color"><input id="pendingColor" type="color"><span class="small">Будущие дни</span></div></div>
+      <div class="actions"><button class="btn dark" data-close="settingsModal">Готово</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modalBack" id="drawModal">
+  <div class="modal">
+    <div class="modalHead"><h2>Нарисуй свой знак</h2><button class="close" data-close="drawModal">×</button></div>
+    <p class="small">Теперь знак не строится из случайных прямых: готовые формы — настоящие аккуратные SVG-фигуры. Свой рисунок тоже сглаживается и сохраняет округлые изгибы.</p>
+    <div class="presets">
+      <button class="preset" data-preset="heart">♡ Сердце</button>
+      <button class="preset" data-preset="star">☆ Звезда</button>
+      <button class="preset" data-preset="flower">✿ Цветок</button>
+      <button class="preset" data-preset="lightning">ϟ Молния</button>
+    </div>
+    <div class="drawArea"><canvas id="canvas"></canvas></div>
+    <div class="actions">
+      <button class="btn" id="clear">Очистить</button>
+      <button class="btn dark" id="save">Сохранить знак</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getDatabase, ref, set, update, onValue, get } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+import firebaseConfig from "./firebase-config.js";
+
+let db = null, cloudEnabled = false;
+try {
+  if (firebaseConfig && firebaseConfig.apiKey && firebaseConfig.projectId) {
+    const app = initializeApp(firebaseConfig);
+    db = getDatabase(app); cloudEnabled = true;
+  }
+} catch(e){ console.warn("Firebase disabled",e); }
+
+const KEY="pushups-v4";
+const defaults={title:"100 ОТЖИМАНИЙ",days:30,shape:"circle",doneColor:"#718b68",pendingColor:"#eee7dd",done:[],customShape:null,room:"",personName:""};
+let state={...defaults,...(JSON.parse(localStorage.getItem(KEY)||"{}"))};
+state.done=Array.isArray(state.done)?state.done:[];
+
+const $=s=>document.querySelector(s);
+function save(){localStorage.setItem(KEY,JSON.stringify(state));}
+function toast(s){const t=$("#toast");t.textContent=s;t.classList.add("show");clearTimeout(window._toast);window._toast=setTimeout(()=>t.classList.remove("show"),1800)}
+function css(){
+ document.documentElement.style.setProperty("--accent",state.doneColor);
+ document.documentElement.style.setProperty("--pending",state.pendingColor);
+}
+function shapeRadius(){return state.shape==="circle"?"50%":state.shape==="square"?"8px":"20px"}
+
+function render(){
+ css();
+ $("#title").textContent=state.title||defaults.title;
+ $("#total").textContent=state.days;
+ $("#done").textContent=state.done.length;
+ const pct=Math.round(state.done.length/state.days*100);
+ $("#pct").textContent=pct+"%"; $("#bar").style.width=pct+"%";
+ const grid=$("#grid"); grid.innerHTML="";
+ const doneSet=new Set(state.done);
+ for(let d=1;d<=state.days;d++){
+   const b=document.createElement("button"); b.className="day"+(doneSet.has(d)?" done":"");
+   b.style.borderRadius=shapeRadius();
+   if(state.customShape){
+     b.innerHTML=`<img class="shapeImg" src="${state.customShape}" alt=""><span class="dayMark">${doneSet.has(d)?"✓":d}</span>`;
+   }else{
+     b.innerHTML=`<span class="dayNum">${d}</span><span class="dayMark">${doneSet.has(d)?"✓":""}</span>`;
+   }
+   b.addEventListener("click",()=>toggle(d)); grid.appendChild(b);
+ }
+}
+async function toggle(d){
+ const i=state.done.indexOf(d);
+ if(i>=0) state.done.splice(i,1); else state.done.push(d);
+ state.done.sort((a,b)=>a-b); save(); render();
+ if(cloudEnabled && state.room) await publishMine();
+}
+
+function open(id){$("#"+id).classList.add("open")}
+function close(id){$("#"+id).classList.remove("open")}
+$("#settingsOpen").onclick=()=>{syncForm();open("settingsModal")};
+$("#drawOpen").onclick=()=>{open("drawModal");setTimeout(resizeCanvas,20)};
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>close(b.dataset.close));
+document.querySelectorAll(".modalBack").forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove("open")});
+
+function syncForm(){
+ $("#titleInput").value=state.title;$("#daysInput").value=state.days;$("#shapeSelect").value=state.shape;
+ $("#doneColor").value=state.doneColor;$("#pendingColor").value=state.pendingColor;
+}
+$("#titleInput").oninput=e=>{state.title=e.target.value||defaults.title;save();render()};
+$("#daysInput").onchange=e=>{state.days=Math.max(1,Math.min(365,+e.target.value||30));state.done=state.done.filter(x=>x<=state.days);save();render();if(state.room)publishMine()};
+$("#shapeSelect").onchange=e=>{state.shape=e.target.value;save();render()};
+$("#doneColor").oninput=e=>{state.doneColor=e.target.value;save();render()};
+$("#pendingColor").oninput=e=>{state.pendingColor=e.target.value;save();render()};
+
+$("#resetBtn").onclick=()=>{if(confirm("Сбросить все мои выполненные дни?")){state.done=[];save();render();if(state.room)publishMine();toast("Прогресс сброшен")}};
+$("#installBtn").onclick=()=>alert("На iPhone: открой сайт в Safari → нажми «Поделиться» → «На экран Домой». После этого приложение будет открываться отдельным окном.");
+
+const canvas=$("#canvas"),ctx=canvas.getContext("2d");let pts=[],drawing=false;
+function resizeCanvas(){
+ const r=canvas.getBoundingClientRect(),dpr=Math.min(3,devicePixelRatio||1);
+ canvas.width=r.width*dpr;canvas.height=r.height*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);drawPoints(pts);
+}
+function p(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+function begin(e){e.preventDefault();drawing=true;pts=[p(e)];drawPoints(pts)}
+function move(e){if(!drawing)return;e.preventDefault();const q=p(e),z=pts.at(-1);if(!z||Math.hypot(q.x-z.x,q.y-z.y)>2.5){pts.push(q);drawPoints(pts)}}
+function end(){if(!drawing)return;drawing=false;pts=smooth(pts);drawPoints(pts)}
+canvas.addEventListener("pointerdown",begin);canvas.addEventListener("pointermove",move);canvas.addEventListener("pointerup",end);canvas.addEventListener("pointercancel",end);canvas.addEventListener("pointerleave",end);
+function smooth(a){
+ if(a.length<5)return a;
+ const out=[a[0]];
+ for(let i=1;i<a.length-1;i++)out.push({x:a[i].x*.62+(a[i-1].x+a[i+1].x)*.19,y:a[i].y*.62+(a[i-1].y+a[i+1].y)*.19});
+ out.push(a.at(-1));return out;
+}
+function drawPoints(a){
+ const r=canvas.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);
+ if(a.length<2)return;
+ ctx.strokeStyle="#272521";ctx.lineWidth=6;ctx.lineCap="round";ctx.lineJoin="round";ctx.beginPath();ctx.moveTo(a[0].x,a[0].y);
+ for(let i=1;i<a.length-1;i++){const m={x:(a[i].x+a[i+1].x)/2,y:(a[i].y+a[i+1].y)/2};ctx.quadraticCurveTo(a[i].x,a[i].y,m.x,m.y)}
+ const last=a.at(-1);ctx.lineTo(last.x,last.y);ctx.stroke();
+}
+function svgPath(points){
+ if(points.length<3)return null;
+ const xs=points.map(x=>x.x),ys=points.map(x=>x.y),minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+ const w=Math.max(1,maxX-minX),h=Math.max(1,maxY-minY),norm=points.map(p=>({x:(p.x-minX+7)/(w+14)*100,y:(p.y-minY+7)/(h+14)*100}));
+ let d=`M ${norm[0].x.toFixed(2)} ${norm[0].y.toFixed(2)}`;
+ for(let i=1;i<norm.length-1;i++){const p=norm[i],n=norm[i+1],mx=(p.x+n.x)/2,my=(p.y+n.y)/2;d+=` Q ${p.x.toFixed(2)} ${p.y.toFixed(2)} ${mx.toFixed(2)} ${my.toFixed(2)}`}
+ const l=norm.at(-1);d+=` L ${l.x.toFixed(2)} ${l.y.toFixed(2)}`;
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="${d}" fill="none" stroke="#272521" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+const presetSVG={
+ heart:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 84 C43 77 17 60 17 38 C17 23 35 16 50 31 C65 16 83 23 83 38 C83 60 57 77 50 84Z" fill="none" stroke="#272521" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ star:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10 L61 38 L91 40 L68 59 L75 89 L50 73 L25 89 L32 59 L9 40 L39 38 Z" fill="none" stroke="#272521" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ flower:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 50 C25 48 20 27 34 21 C42 17 49 25 50 38 C51 25 58 17 66 21 C80 27 75 48 50 50 C75 51 80 72 66 79 C58 83 51 75 50 62 C49 75 42 83 34 79 C20 72 25 51 50 50Z" fill="none" stroke="#272521" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="50" r="8" fill="none" stroke="#272521" stroke-width="7"/></svg>`,
+ lightning:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M58 8 L23 53 L47 53 L40 92 L77 43 L54 43 Z" fill="none" stroke="#272521" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+};
+document.querySelectorAll(".preset").forEach(b=>b.onclick=()=>{const s=presetSVG[b.dataset.preset];state.customShape="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(s);pts=[];drawPoints([]);toast("Аккуратная форма выбрана")});
+$("#clear").onclick=()=>{pts=[];drawPoints([])};
+$("#save").onclick=()=>{if(!state.customShape){const s=svgPath(pts);if(!s){toast("Сначала нарисуй знак");return}state.customShape="data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(s)}save();render();close("drawModal");toast("Знак сохранён")};
+
+let roomUnsub=null;
+function roomCode(){return state.room}
+function renderDuo(){
+ $("#duoToggle").checked=!!state.room;$("#duoPanel").classList.toggle("open",!!state.room||$("#duoToggle").checked);
+ if(state.room){$("#roomBox").style.display="flex";$("#roomCode").textContent=state.room;$("#copyBtn").style.display="inline-block"}
+}
+$("#duoToggle").onchange=()=>{$("#duoPanel").classList.toggle("open",$("#duoToggle").checked);if($("#duoToggle").checked&&!cloudEnabled)toast("Для режима «Мы вдвоём» нужно подключить Firebase")};
+function randomCode(){return Math.random().toString(36).slice(2,8).toUpperCase()}
+function myId(){let x=localStorage.getItem("pushups-person-id");if(!x){x=crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2);localStorage.setItem("pushups-person-id",x)}return x}
+async function publishMine(){
+ if(!db||!state.room)return;
+ const id=myId();const personName=state.personName||"Участник";
+ await set(ref(db,`rooms/${state.room}/people/${id}`),{name:personName,done:state.done,days:state.days,updatedAt:Date.now()});
+}
+function watchRoom(){
+ if(roomUnsub)roomUnsub();
+ if(!db||!state.room)return;
+ roomUnsub=onValue(ref(db,`rooms/${state.room}/people`),snap=>{
+   const people=snap.val()||{};const box=$("#people");box.innerHTML="";
+   Object.entries(people).forEach(([id,p])=>{
+     const d=Array.isArray(p.done)?p.done.length:0, total=p.days||state.days;
+     const el=document.createElement("div");el.className="person";
+     el.innerHTML=`<div class="personName">${escapeHtml(p.name||"Участник")}</div><div class="personScore">${d} / ${total}</div><div class="small">${Math.round(d/total*100)}% выполнено</div>`;
+     box.appendChild(el);
+   });
+   $("#cloudStatus").textContent="Синхронизация включена";
+ });
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
+async function enterRoom(code){
+ if(!cloudEnabled){toast("Сначала настрой Firebase");return}
+ code=code.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,"");
+ if(code.length<4){toast("Код слишком короткий");return}
+ state.room=code;save();renderDuo();await publishMine();watchRoom();toast("Комната подключена");
+}
+$("#createBtn").onclick=async()=>{if(!cloudEnabled){toast("Firebase ещё не настроен");return}await enterRoom(randomCode())};
+$("#joinBtn").onclick=()=>enterRoom($("#roomInput").value);
+$("#copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText(state.room);toast("Код скопирован")}catch(e){toast("Код: "+state.room)}};
+
+function applyTheme(){}
+render();renderDuo();syncForm();
+</script>
+</body>
+</html>
