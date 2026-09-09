@@ -8,4 +8,5 @@ export default {
   storageBucket: "PASTE_PROJECT_ID.firebasestorage.app",
   messagingSenderId: "PASTE_MESSAGING_SENDER_ID",
   appId: "PASTE_APP_ID"
+  databaseURL: "https://b0n3n1-default-rtdb.europe-west1.firebasedatabase.app/",
 };
