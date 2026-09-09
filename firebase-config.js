@@ -1,7 +1,7 @@
 // ВСТАВЬТЕ СЮДА конфигурацию вашего Firebase-проекта.
 // Firebase Console → Project settings → Your apps → Web app → SDK setup.
 export default {
-  apiKey: "...",
+  apiKey: "AIzaSyAe4czA1POr7_fwVnqXljD_5_X3rFTZIlg",
   authDomain: "b0n3n1.firebaseapp.com",
   projectId: "b0n3n1",
   storageBucket: "b0n3n1.firebasestorage.app",
