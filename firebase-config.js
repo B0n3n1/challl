@@ -1,12 +1,12 @@
 // ВСТАВЬТЕ СЮДА конфигурацию вашего Firebase-проекта.
 // Firebase Console → Project settings → Your apps → Web app → SDK setup.
 export default {
-  apiKey: "PASTE_API_KEY",
-  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://PASTE_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "PASTE_PROJECT_ID",
-  storageBucket: "PASTE_PROJECT_ID.firebasestorage.app",
-  messagingSenderId: "PASTE_MESSAGING_SENDER_ID",
-  appId: "PASTE_APP_ID"
-  databaseURL: "https://b0n3n1-default-rtdb.europe-west1.firebasedatabase.app/",
+  apiKey: "...",
+  authDomain: "b0n3n1.firebaseapp.com",
+  projectId: "b0n3n1",
+  storageBucket: "b0n3n1.firebasestorage.app",
+  messagingSenderId: "42178037933",
+  appId: "1:42178037933:web:5336bf1f26603f94e85e24",
+  measurementId: "G-XE02N42FR7",
+  databaseURL: "https://b0n3n1-default-rtdb.europe-west1.firebasedatabase.app/"
 };
