@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 
 <html lang="ru">
@@ -325,9 +326,7 @@ input[type=color]{width:48px;height:42px;border:1px solid var(--line);border-rad
     </div>
 
     <p class="small">
-      Теперь знак не строится из случайных прямых: готовые формы —
-      настоящие аккуратные SVG-фигуры. Свой рисунок тоже сглаживается
-      и сохраняет округлые изгибы.
+      Нарисуй свой знак пальцем или мышкой. Можно также выбрать готовую форму.
     </p>
 
     <div class="presets">
@@ -363,9 +362,7 @@ import {
   getDatabase,
   ref,
   set,
-  update,
-  onValue,
-  get
+  onValue
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 import {
@@ -382,6 +379,7 @@ import firebaseConfig from "./firebase-config.js";
 
 let db=null;
 let auth=null;
+let firebaseUser=null;
 let cloudEnabled=false;
 let firebaseReady=null;
 
@@ -390,48 +388,58 @@ async function initFirebase(){
   try{
 
     if(
-      firebaseConfig &&
-      firebaseConfig.apiKey &&
-      firebaseConfig.projectId
+      !firebaseConfig ||
+      !firebaseConfig.apiKey ||
+      !firebaseConfig.projectId
     ){
 
-      const app=initializeApp(firebaseConfig);
+      console.warn("Firebase config missing");
+      return;
 
-      auth=getAuth(app);
-      db=getDatabase(app);
+    }
 
-      const credential=
-        await signInAnonymously(auth);
+    const app=
+      initializeApp(firebaseConfig);
 
-      if(credential?.user){
+    auth=
+      getAuth(app);
 
-        cloudEnabled=true;
+    db=
+      getDatabase(app);
 
-        console.log(
-          "Firebase Anonymous Auth OK:",
-          credential.user.uid
-        );
+    const credential=
+      await signInAnonymously(auth);
 
-      }
+    if(credential?.user){
+
+      firebaseUser=
+        credential.user;
+
+      cloudEnabled=true;
+
+      console.log(
+        "Firebase Anonymous Auth OK:",
+        firebaseUser.uid
+      );
+
+      $("#cloudStatus").textContent=
+        "Firebase подключён";
 
     }
 
   }catch(e){
 
     console.warn(
-      "Firebase disabled",
+      "Firebase disabled:",
       e
     );
 
     cloudEnabled=false;
+    firebaseUser=null;
 
   }
 
 }
-
-firebaseReady=initFirebase();
-
-await firebaseReady;
 
 
 /* =========================
@@ -465,7 +473,8 @@ state.done=
     :[];
 
 
-const $=s=>document.querySelector(s);
+const $=
+  s=>document.querySelector(s);
 
 
 /* =========================
@@ -551,9 +560,10 @@ function render(){
   $("#done").textContent=
     state.done.length;
 
-  const pct=Math.round(
-    state.done.length/state.days*100
-  );
+  const pct=
+    Math.round(
+      state.done.length/state.days*100
+    );
 
   $("#pct").textContent=
     pct+"%";
@@ -650,7 +660,7 @@ async function toggle(d){
 
   if(
     cloudEnabled &&
-    auth?.currentUser &&
+    firebaseUser &&
     state.room
   ){
 
@@ -852,7 +862,8 @@ $("#installBtn").onclick=()=>{
    DRAWING
 ========================= */
 
-const canvas=$("#canvas");
+const canvas=
+  $("#canvas");
 
 const ctx=
   canvas.getContext("2d");
@@ -904,9 +915,20 @@ function begin(e){
 
   e.preventDefault();
 
+  /*
+    ВАЖНО:
+    если до этого было выбрано сердце/звезда/цветок,
+    начинаем новый собственный рисунок.
+    Старый SVG больше не должен использоваться.
+  */
+
+  state.customShape=null;
+
   drawing=true;
 
-  pts=[p(e)];
+  pts=[
+    p(e)
+  ];
 
   drawPoints(pts);
 
@@ -915,13 +937,16 @@ function begin(e){
 
 function move(e){
 
-  if(!drawing)return;
+  if(!drawing)
+    return;
 
   e.preventDefault();
 
-  const q=p(e);
+  const q=
+    p(e);
 
-  const z=pts.at(-1);
+  const z=
+    pts.at(-1);
 
   if(
     !z||
@@ -942,11 +967,13 @@ function move(e){
 
 function end(){
 
-  if(!drawing)return;
+  if(!drawing)
+    return;
 
   drawing=false;
 
-  pts=smooth(pts);
+  pts=
+    smooth(pts);
 
   drawPoints(pts);
 
@@ -984,7 +1011,9 @@ function smooth(a){
   if(a.length<5)
     return a;
 
-  const out=[a[0]];
+  const out=[
+    a[0]
+  ];
 
   for(
     let i=1;
@@ -1006,7 +1035,9 @@ function smooth(a){
 
   }
 
-  out.push(a.at(-1));
+  out.push(
+    a.at(-1)
+  );
 
   return out;
 
@@ -1085,10 +1116,14 @@ function svgPath(points){
     return null;
 
   const xs=
-    points.map(x=>x.x);
+    points.map(
+      x=>x.x
+    );
 
   const ys=
-    points.map(x=>x.y);
+    points.map(
+      x=>x.y
+    );
 
   const minX=
     Math.min(...xs);
@@ -1266,8 +1301,12 @@ document
 
       drawPoints([]);
 
+      save();
+
+      render();
+
       toast(
-        "Аккуратная форма выбрана"
+        "Форма выбрана"
       );
 
     }
@@ -1278,31 +1317,50 @@ $("#clear").onclick=()=>{
 
   pts=[];
 
+  state.customShape=null;
+
   drawPoints([]);
+
+  save();
+
+  render();
+
+  toast(
+    "Знак очищен"
+  );
 
 };
 
 
 $("#save").onclick=()=>{
 
-  if(!state.customShape){
+  /*
+    Если есть нарисованные точки —
+    всегда сохраняем именно собственный рисунок.
+  */
+
+  if(pts.length>=3){
 
     const s=
       svgPath(pts);
 
-    if(!s){
+    if(s){
 
-      toast(
-        "Сначала нарисуй знак"
-      );
-
-      return;
+      state.customShape=
+        "data:image/svg+xml;charset=UTF-8,"+
+        encodeURIComponent(s);
 
     }
 
-    state.customShape=
-      "data:image/svg+xml;charset=UTF-8,"+
-      encodeURIComponent(s);
+  }
+
+  if(!state.customShape){
+
+    toast(
+      "Сначала нарисуй знак"
+    );
+
+    return;
 
   }
 
@@ -1324,13 +1382,6 @@ $("#save").onclick=()=>{
 ========================= */
 
 let roomUnsub=null;
-
-
-function roomCode(){
-
-  return state.room;
-
-}
 
 
 function renderDuo(){
@@ -1355,6 +1406,14 @@ function renderDuo(){
     $("#copyBtn").style.display=
       "inline-block";
 
+  }else{
+
+    $("#roomBox").style.display=
+      "none";
+
+    $("#copyBtn").style.display=
+      "none";
+
   }
 
 }
@@ -1373,7 +1432,7 @@ $("#duoToggle").onchange=()=>{
   ){
 
     toast(
-      "Для режима «Мы вдвоём» нужно подключить Firebase"
+      "Firebase ещё подключается…"
     );
 
   }
@@ -1391,23 +1450,22 @@ function randomCode(){
 }
 
 
-/* Firebase UID */
 function myId(){
 
-  return auth?.currentUser?.uid||null;
+  return firebaseUser?.uid||null;
 
 }
 
 
 /* =========================
-   PUBLISH MY PROGRESS
+   PUBLISH
 ========================= */
 
 async function publishMine(){
 
   if(
     !db||
-    !auth?.currentUser||
+    !firebaseUser||
     !state.room
   ){
 
@@ -1415,7 +1473,8 @@ async function publishMine(){
 
   }
 
-  const id=myId();
+  const id=
+    myId();
 
   if(!id)
     return;
@@ -1424,18 +1483,29 @@ async function publishMine(){
     state.personName||
     "Участник";
 
-  await set(
-    ref(
-      db,
-      `rooms/${state.room}/people/${id}`
-    ),
-    {
-      name:personName,
-      done:state.done,
-      days:state.days,
-      updatedAt:Date.now()
-    }
-  );
+  try{
+
+    await set(
+      ref(
+        db,
+        `rooms/${state.room}/people/${id}`
+      ),
+      {
+        name:personName,
+        done:state.done,
+        days:state.days,
+        updatedAt:Date.now()
+      }
+    );
+
+  }catch(e){
+
+    console.warn(
+      "Publish error:",
+      e
+    );
+
+  }
 
 }
 
@@ -1451,7 +1521,7 @@ function watchRoom(){
 
   if(
     !db||
-    !auth?.currentUser||
+    !firebaseUser||
     !state.room
   ){
 
@@ -1525,6 +1595,17 @@ function watchRoom(){
         $("#cloudStatus").textContent=
           "Синхронизация включена";
 
+      },
+      error=>{
+
+        console.warn(
+          "Room listener error:",
+          error
+        );
+
+        $("#cloudStatus").textContent=
+          "Ошибка синхронизации";
+
       }
     );
 
@@ -1561,14 +1642,14 @@ async function enterRoom(code){
   if(!cloudEnabled){
 
     toast(
-      "Сначала настрой Firebase"
+      "Firebase не подключён"
     );
 
     return;
 
   }
 
-  if(!auth?.currentUser){
+  if(!firebaseUser){
 
     toast(
       "Не удалось войти в Firebase"
@@ -1597,7 +1678,8 @@ async function enterRoom(code){
 
   }
 
-  state.room=code;
+  state.room=
+    code;
 
   save();
 
@@ -1627,17 +1709,7 @@ $("#createBtn").onclick=
     if(!cloudEnabled){
 
       toast(
-        "Firebase ещё не настроен"
-      );
-
-      return;
-
-    }
-
-    if(!auth?.currentUser){
-
-      toast(
-        "Не удалось войти в Firebase"
+        "Firebase не подключён"
       );
 
       return;
@@ -1665,7 +1737,7 @@ $("#joinBtn").onclick=()=>{
 
 
 /* =========================
-   COPY ROOM CODE
+   COPY
 ========================= */
 
 $("#copyBtn").onclick=
@@ -1693,10 +1765,8 @@ $("#copyBtn").onclick=
 
 
 /* =========================
-   START
+   START APP IMMEDIATELY
 ========================= */
-
-function applyTheme(){}
 
 render();
 
@@ -1704,7 +1774,31 @@ renderDuo();
 
 syncForm();
 
+
+/* =========================
+   FIREBASE IN BACKGROUND
+========================= */
+
+firebaseReady=
+  initFirebase()
+    .then(()=>{
+
+      if(
+        cloudEnabled &&
+        firebaseUser &&
+        state.room
+      ){
+
+        publishMine();
+
+        watchRoom();
+
+      }
+
+    });
+
 </script>
 
 </body>
 </html>
+```
