@@ -1,4 +1,4 @@
-const CACHE="pushups-v3";
+const CACHE="pushups-v4";
 
 const ASSETS=[
   "./",
