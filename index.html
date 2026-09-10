@@ -1,4 +1,3 @@
-
 <!doctype html>
 
 <html lang="ru">
@@ -36,6 +35,8 @@ h1{font-family:"Playfair Display",serif;font-size:clamp(37px,10vw,66px);line-hei
 .btn{border:1px solid var(--line);background:rgba(255,255,255,.7);color:var(--ink);border-radius:14px;padding:11px 14px;font-weight:600}
 .btn:active{transform:scale(.98)}
 .btn.dark{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.plus{font-size:19px;font-weight:800;min-width:64px}
+.btn.minus{font-size:19px;font-weight:800;min-width:64px}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow)}
 .progress{padding:18px 18px 16px;margin-bottom:15px}
 .progressTop{display:flex;align-items:end;justify-content:space-between}
@@ -43,6 +44,9 @@ h1{font-family:"Playfair Display",serif;font-size:clamp(37px,10vw,66px);line-hei
 .percent{font-size:14px;color:var(--muted);font-weight:800}
 .bar{height:9px;background:#ece3d7;border-radius:99px;margin:12px 0 7px;overflow:hidden}
 .bar span{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .3s}
+.todayStats{display:flex;justify-content:space-between;gap:10px;margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+.todayLabel{font-size:13px;color:var(--muted)}
+.todayValue{font-family:"Manrope";font-size:17px;font-weight:800}
 .gridCard{padding:17px}
 .gridHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
 .gridTitle{font-family:"Playfair Display",serif;font-size:24px}
@@ -58,6 +62,14 @@ h1{font-family:"Playfair Display",serif;font-size:clamp(37px,10vw,66px);line-hei
 .dayNum{font-family:"Manrope",sans-serif;font-weight:800;font-size:16px;z-index:2}
 .day.done .dayNum{display:none}
 .dayMark{position:absolute;right:8px;bottom:6px;font-size:13px;font-weight:800;z-index:3}
+.dayReps{
+  position:absolute;
+  left:7px;
+  bottom:6px;
+  font-size:10px;
+  font-weight:800;
+  z-index:3;
+}
 .shapeImg{width:70%;height:70%;object-fit:contain}
 .day.done .shapeImg{filter:brightness(0) invert(1)}
 .modeCard{margin-top:15px;padding:17px}
@@ -83,27 +95,49 @@ h1{font-family:"Playfair Display",serif;font-size:clamp(37px,10vw,66px);line-hei
 .person{border:1px solid var(--line);border-radius:17px;padding:13px;background:#fffaf4}
 .personName{font-weight:800}
 .personScore{font-family:"Manrope";font-size:22px;font-weight:800;margin-top:3px}
+.personToday{font-size:13px;margin-top:5px;font-weight:700}
 .small{font-size:12px;color:var(--muted)}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
 footer{color:var(--muted);font-size:12px;line-height:1.5;text-align:center;padding:20px 10px}
+
 .modalBack{display:none;position:fixed;z-index:50;inset:0;background:#28251f88;align-items:flex-end;padding:10px}
 .modalBack.open{display:flex}
 .modal{width:min(700px,100%);max-height:93vh;overflow:auto;background:var(--paper);border-radius:27px;padding:19px;box-shadow:0 30px 100px #0004}
 .modalHead{display:flex;justify-content:space-between;align-items:center}
 .modal h2{font-family:"Playfair Display";font-size:29px;margin:0}
-.close{width:38px;height:38px;border-radius:50%;background:#f0e8de;font-size:21px}
+.close{width:38px;height:38px;border-radius:50%;background:#f0e8de;font-size:21px;border:0}
 .form{display:grid;gap:13px;margin-top:15px}
 label{font-size:13px;font-weight:800;color:#5f5a52}
 .field{display:grid;gap:7px}
 .color{display:flex;gap:9px;align-items:center}
 input[type=color]{width:48px;height:42px;border:1px solid var(--line);border-radius:11px;padding:3px;background:#fff}
+
+.dayModalInfo{text-align:center;padding:8px 0 3px}
+.dayModalNumber{font-family:"Playfair Display";font-size:25px}
+.repBig{font-family:"Manrope";font-size:42px;font-weight:800;letter-spacing:-.05em;margin-top:5px}
+.repPlan{font-size:14px;color:var(--muted)}
+.repPercent{font-family:"Manrope";font-size:18px;font-weight:800;margin-top:5px}
+.repBar{height:11px;background:#ece3d7;border-radius:99px;overflow:hidden;margin:14px 0 4px}
+.repBar span{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .25s}
+.repControls{display:flex;justify-content:center;gap:9px;margin-top:15px}
+.repInputRow{display:flex;gap:8px;margin-top:12px}
+.repInputRow input{flex:1}
+.completeBtn{width:100%;margin-top:12px}
+
+.nameBox{
+ background:#f2eadf;
+ border-radius:16px;
+ padding:13px;
+ margin-top:12px;
+}
+.nameBoxTitle{font-weight:800;font-size:13px;margin-bottom:7px}
+.nameRow{display:flex;gap:8px}
+.nameRow input{flex:1}
+
 .drawArea{background:#f2eadf;border:1px solid var(--line);border-radius:19px;padding:9px;margin-top:13px}
 #canvas{display:block;width:100%;height:330px;background:#fffdf9;border-radius:13px;touch-action:none}
 .presets{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0}
 .preset{background:#f0e8de;border:1px solid var(--line);border-radius:999px;padding:8px 11px}
-.previewLine{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12px}
-.previewBox{width:60px;height:60px;border-radius:15px;background:var(--pending);display:flex;align-items:center;justify-content:center}
-.previewBox img{width:75%;height:75%;object-fit:contain}
 .toast{position:fixed;z-index:90;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:#272521;color:#fff;padding:10px 15px;border-radius:99px;font-size:13px;transition:.2s;pointer-events:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
@@ -120,6 +154,7 @@ input[type=color]{width:48px;height:42px;border:1px solid var(--line);border-rad
  .gridHint{display:none}
  .people{grid-template-columns:1fr}
  .join{display:grid;grid-template-columns:1fr auto}
+ .nameRow{display:grid;grid-template-columns:1fr auto}
 }
 </style>
 </head>
@@ -128,144 +163,232 @@ input[type=color]{width:48px;height:42px;border:1px solid var(--line);border-rad
 
 <div class="app">
 
-  <header class="top">
+<header class="top">
+  <div>
+    <div class="kicker">ваш личный челлендж</div>
+    <h1 id="title">100 ОТЖИМАНИЙ</h1>
+    <div class="lead">
+      30 дней. Сделай свой дневной план — и отмечай каждое повторение.
+    </div>
+  </div>
+
+  <div class="topBtns">
+    <button class="btn" id="drawOpen">✦ Свой знак</button>
+    <button class="btn" id="settingsOpen">Настройки</button>
+  </div>
+</header>
+
+
+<section class="card progress">
+
+  <div class="progressTop">
+    <div class="count">
+      <span id="done">0</span> / <span id="total">30</span>
+    </div>
+
+    <div class="percent" id="pct">0%</div>
+  </div>
+
+  <div class="bar">
+    <span id="bar"></span>
+  </div>
+
+  <div class="small">
+    Выполненные дни сохраняются автоматически на этом устройстве.
+  </div>
+
+  <div class="todayStats">
     <div>
-      <div class="kicker">ваш личный челлендж</div>
-      <h1 id="title">100 ОТЖИМАНИЙ</h1>
-      <div class="lead">30 дней. Сделал свои 100 — отметил день. Ничего больше не нужно.</div>
+      <div class="todayLabel">Сегодня</div>
+      <div class="todayValue" id="todayReps">0 / 100</div>
     </div>
 
-    <div class="topBtns">
-      <button class="btn" id="drawOpen">✦ Свой знак</button>
-      <button class="btn" id="settingsOpen">Настройки</button>
+    <div style="text-align:right">
+      <div class="todayLabel">Выполнено</div>
+      <div class="todayValue" id="todayPct">0%</div>
     </div>
-  </header>
+  </div>
 
-  <section class="card progress">
-    <div class="progressTop">
-      <div class="count">
-        <span id="done">0</span> / <span id="total">30</span>
+</section>
+
+
+<section class="card gridCard">
+
+  <div class="gridHead">
+    <div class="gridTitle">Календарь</div>
+    <div class="gridHint">Нажми на день</div>
+  </div>
+
+  <div id="grid" class="grid"></div>
+
+</section>
+
+
+<section class="card modeCard">
+
+  <div class="modeRow">
+
+    <div>
+      <div class="modeName">Мы вдвоём</div>
+
+      <div class="modeText">
+        Один общий код комнаты — и вы видите прогресс друг друга.
       </div>
-      <div class="percent" id="pct">0%</div>
     </div>
 
-    <div class="bar">
-      <span id="bar"></span>
-    </div>
+    <label class="switch">
+      <input id="duoToggle" type="checkbox">
+      <span class="slider"></span>
+    </label>
 
-    <div class="small">
-      Выполненные дни сохраняются автоматически на этом устройстве.
-    </div>
-  </section>
+  </div>
 
-  <section class="card gridCard">
-    <div class="gridHead">
-      <div class="gridTitle">Календарь</div>
-      <div class="gridHint">Нажми на день после тренировки</div>
-    </div>
 
-    <div id="grid" class="grid"></div>
-  </section>
+  <div id="duoPanel" class="duo">
 
-  <section class="card modeCard">
+    <div class="nameBox">
 
-    <div class="modeRow">
-      <div>
-        <div class="modeName">Мы вдвоём</div>
-        <div class="modeText">
-          Один общий код комнаты — и вы видите прогресс друг друга.
-        </div>
+      <div class="nameBoxTitle">
+        Твоё имя
       </div>
 
-      <label class="switch">
-        <input id="duoToggle" type="checkbox">
-        <span class="slider"></span>
-      </label>
-    </div>
+      <div class="nameRow">
 
-    <div id="duoPanel" class="duo">
-
-      <div class="join">
         <input
           class="input"
-          id="roomInput"
-          maxlength="20"
-          placeholder="Введите код комнаты"
+          id="nameInput"
+          maxlength="30"
+          placeholder="Например, Сергей"
         >
 
-        <button class="btn dark" id="joinBtn">
-          Войти
-        </button>
-      </div>
-
-      <div class="actions">
-        <button class="btn" id="createBtn">
-          Создать новую комнату
+        <button class="btn dark" id="nameSave">
+          Сохранить
         </button>
 
-        <button
-          class="btn"
-          id="copyBtn"
-          style="display:none"
-        >
-          Скопировать код
-        </button>
       </div>
-
-      <div
-        id="roomBox"
-        style="display:none"
-        class="room"
-      >
-        <div>
-          <div class="small">Код комнаты</div>
-          <div id="roomCode" class="code"></div>
-        </div>
-
-        <div id="cloudStatus" class="status">
-          Подключение…
-        </div>
-      </div>
-
-      <div id="people" class="people"></div>
 
     </div>
-  </section>
 
-  <section class="actions">
-    <button class="btn" id="resetBtn">
-      Сбросить мой прогресс
-    </button>
 
-    <button class="btn" id="installBtn">
-      Как установить на iPhone
-    </button>
-  </section>
+    <div class="join" style="margin-top:12px">
 
-  <footer>
-    Открой эту страницу в Safari и выбери «Поделиться → На экран Домой».
-  </footer>
+      <input
+        class="input"
+        id="roomInput"
+        maxlength="20"
+        placeholder="Введите код комнаты"
+      >
+
+      <button class="btn dark" id="joinBtn">
+        Войти
+      </button>
+
+    </div>
+
+
+    <div class="actions">
+
+      <button class="btn" id="createBtn">
+        Создать новую комнату
+      </button>
+
+      <button
+        class="btn"
+        id="copyBtn"
+        style="display:none"
+      >
+        Скопировать код
+      </button>
+
+    </div>
+
+
+    <div
+      id="roomBox"
+      style="display:none"
+      class="room"
+    >
+
+      <div>
+        <div class="small">Код комнаты</div>
+        <div id="roomCode" class="code"></div>
+      </div>
+
+      <div id="cloudStatus" class="status">
+        Подключение…
+      </div>
+
+    </div>
+
+
+    <div id="people" class="people"></div>
+
+  </div>
+
+</section>
+
+
+<section class="actions">
+
+  <button class="btn" id="resetBtn">
+    Сбросить мой прогресс
+  </button>
+
+  <button class="btn" id="installBtn">
+    Как установить на iPhone
+  </button>
+
+</section>
+
+
+<footer>
+  Открой эту страницу в Safari и выбери «Поделиться → На экран Домой».
+</footer>
 
 </div>
 
 
+<!--  
+     SETTINGS
+  -->
+
 <div class="modalBack" id="settingsModal">
+
   <div class="modal">
 
     <div class="modalHead">
+
       <h2>Настройки</h2>
-      <button class="close" data-close="settingsModal">×</button>
+
+      <button
+        class="close"
+        data-close="settingsModal"
+      >
+        ×
+      </button>
+
     </div>
+
 
     <div class="form">
 
       <div class="field">
+
         <label>Название</label>
-        <input class="input" id="titleInput" maxlength="40">
+
+        <input
+          class="input"
+          id="titleInput"
+          maxlength="40"
+        >
+
       </div>
 
+
       <div class="field">
+
         <label>Количество дней</label>
+
         <input
           class="input"
           id="daysInput"
@@ -273,83 +396,305 @@ input[type=color]{width:48px;height:42px;border:1px solid var(--line);border-rad
           min="1"
           max="365"
         >
+
       </div>
 
+
       <div class="field">
+
+        <label>Дневной план отжиманий</label>
+
+        <input
+          class="input"
+          id="dailyPlanInput"
+          type="number"
+          min="1"
+          max="10000"
+        >
+
+        <span class="small">
+          Например, 100. Процент каждого дня будет считаться от этого числа.
+        </span>
+
+      </div>
+
+
+      <div class="field">
+
         <label>Форма дней</label>
 
-        <select class="input" id="shapeSelect">
+        <select
+          class="input"
+          id="shapeSelect"
+        >
+
           <option value="circle">Круг</option>
           <option value="square">Квадрат</option>
           <option value="soft">Скруглённый квадрат</option>
+
         </select>
+
       </div>
 
+
       <div class="field">
+
         <label>Цвет выполненного</label>
 
         <div class="color">
-          <input id="doneColor" type="color">
-          <span class="small">Заполненные дни</span>
+
+          <input
+            id="doneColor"
+            type="color"
+          >
+
+          <span class="small">
+            Заполненные дни
+          </span>
+
         </div>
+
       </div>
 
+
       <div class="field">
+
         <label>Цвет невыполненного</label>
 
         <div class="color">
-          <input id="pendingColor" type="color">
-          <span class="small">Будущие дни</span>
+
+          <input
+            id="pendingColor"
+            type="color"
+          >
+
+          <span class="small">
+            Будущие дни
+          </span>
+
         </div>
+
       </div>
 
+
       <div class="actions">
+
         <button
           class="btn dark"
           data-close="settingsModal"
         >
           Готово
         </button>
+
       </div>
 
     </div>
+
   </div>
+
 </div>
 
 
-<div class="modalBack" id="drawModal">
+<!--  
+     DAY MODAL
+  -->
+
+<div class="modalBack" id="dayModal">
+
   <div class="modal">
 
     <div class="modalHead">
-      <h2>Нарисуй свой знак</h2>
-      <button class="close" data-close="drawModal">×</button>
+
+      <h2>Тренировка</h2>
+
+      <button
+        class="close"
+        data-close="dayModal"
+      >
+        ×
+      </button>
+
     </div>
+
+
+    <div class="dayModalInfo">
+
+      <div
+        class="dayModalNumber"
+        id="selectedDayTitle"
+      >
+        День 1
+      </div>
+
+      <div
+        class="repBig"
+        id="selectedReps"
+      >
+        0
+      </div>
+
+      <div class="repPlan">
+        от <span id="selectedPlan">100</span> повторений
+      </div>
+
+      <div
+        class="repPercent"
+        id="selectedPercent"
+      >
+        0%
+      </div>
+
+      <div class="repBar">
+        <span id="selectedBar"></span>
+      </div>
+
+    </div>
+
+
+    <div class="repControls">
+
+      <button
+        class="btn minus"
+        id="minus10"
+      >
+        −10
+      </button>
+
+      <button
+        class="btn plus"
+        id="plus10"
+      >
+        +10
+      </button>
+
+    </div>
+
+
+    <div class="repInputRow">
+
+      <input
+        class="input"
+        id="exactReps"
+        type="number"
+        min="0"
+        max="100000"
+        placeholder="Точное количество"
+      >
+
+      <button
+        class="btn dark"
+        id="setReps"
+      >
+        Ввести
+      </button>
+
+    </div>
+
+
+    <button
+      class="btn dark completeBtn"
+      id="completeDay"
+    >
+      Отметить день выполненным
+    </button>
+
+  </div>
+
+</div>
+
+
+<!--  
+     DRAW MODAL
+  -->
+
+<div class="modalBack" id="drawModal">
+
+  <div class="modal">
+
+    <div class="modalHead">
+
+      <h2>Нарисуй свой знак</h2>
+
+      <button
+        class="close"
+        data-close="drawModal"
+      >
+        ×
+      </button>
+
+    </div>
+
 
     <p class="small">
       Нарисуй свой знак пальцем или мышкой. Можно также выбрать готовую форму.
     </p>
 
+
     <div class="presets">
-      <button class="preset" data-preset="heart">♡ Сердце</button>
-      <button class="preset" data-preset="star">☆ Звезда</button>
-      <button class="preset" data-preset="flower">✿ Цветок</button>
-      <button class="preset" data-preset="lightning">ϟ Молния</button>
+
+      <button
+        class="preset"
+        data-preset="heart"
+      >
+        ♡ Сердце
+      </button>
+
+      <button
+        class="preset"
+        data-preset="star"
+      >
+        ☆ Звезда
+      </button>
+
+      <button
+        class="preset"
+        data-preset="flower"
+      >
+        ✿ Цветок
+      </button>
+
+      <button
+        class="preset"
+        data-preset="lightning"
+      >
+        ϟ Молния
+      </button>
+
     </div>
+
 
     <div class="drawArea">
       <canvas id="canvas"></canvas>
     </div>
 
+
     <div class="actions">
-      <button class="btn" id="clear">Очистить</button>
-      <button class="btn dark" id="save">Сохранить знак</button>
+
+      <button
+        class="btn"
+        id="clear"
+      >
+        Очистить
+      </button>
+
+      <button
+        class="btn dark"
+        id="save"
+      >
+        Сохранить знак
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
 
-<div class="toast" id="toast"></div>
+<div
+  class="toast"
+  id="toast"
+></div>
 
 
 <script type="module">
@@ -373,9 +718,9 @@ import {
 import firebaseConfig from "./firebase-config.js";
 
 
-/* =========================
+/*  
    FIREBASE
-========================= */
+  */
 
 let db=null;
 let auth=null;
@@ -442,30 +787,49 @@ async function initFirebase(){
 }
 
 
-/* =========================
+/*  
    STATE
-========================= */
+  */
 
 const KEY="pushups-v4";
 
 const defaults={
+
   title:"100 ОТЖИМАНИЙ",
+
   days:30,
+
+  dailyPlan:100,
+
   shape:"circle",
+
   doneColor:"#718b68",
+
   pendingColor:"#eee7dd",
+
   done:[],
+
+  dayReps:{},
+
   customShape:null,
+
   room:"",
+
   personName:""
+
 };
 
+
 let state={
+
   ...defaults,
+
   ...(JSON.parse(
     localStorage.getItem(KEY)||"{}"
   ))
+
 };
+
 
 state.done=
   Array.isArray(state.done)
@@ -473,13 +837,27 @@ state.done=
     :[];
 
 
+state.dayReps=
+  state.dayReps &&
+  typeof state.dayReps==="object"
+    ?state.dayReps
+    :{};
+
+
+state.dailyPlan=
+  Math.max(
+    1,
+    Number(state.dailyPlan)||100
+  );
+
+
 const $=
   s=>document.querySelector(s);
 
 
-/* =========================
+/*  
    LOCAL STORAGE
-========================= */
+  */
 
 function save(){
 
@@ -491,9 +869,9 @@ function save(){
 }
 
 
-/* =========================
+/*  
    TOAST
-========================= */
+  */
 
 function toast(s){
 
@@ -513,9 +891,9 @@ function toast(s){
 }
 
 
-/* =========================
+/*  
    THEME
-========================= */
+  */
 
 function css(){
 
@@ -543,13 +921,86 @@ function shapeRadius(){
 }
 
 
-/* =========================
+/*  
+   REPETITIONS
+  */
+
+function getReps(day){
+
+  return Math.max(
+    0,
+    Number(state.dayReps[day])||0
+  );
+
+}
+
+
+function getPercent(reps){
+
+  return Math.round(
+    reps/state.dailyPlan*100
+  );
+
+}
+
+
+function isDayComplete(day){
+
+  return getReps(day)>=state.dailyPlan;
+
+}
+
+
+function syncDoneFromReps(){
+
+  const result=[];
+
+  for(let d=1;d<=state.days;d++){
+
+    if(isDayComplete(d))
+      result.push(d);
+
+  }
+
+  /*
+    Сохраняем также старые вручную
+    отмеченные дни, если для них ещё
+    нет количества повторений.
+  */
+
+  state.done.forEach(d=>{
+
+    if(
+      d>=1 &&
+      d<=state.days &&
+      !state.dayReps[d] &&
+      !result.includes(d)
+    ){
+
+      result.push(d);
+
+    }
+
+  });
+
+  result.sort(
+    (a,b)=>a-b
+  );
+
+  state.done=result;
+
+}
+
+
+/*  
    RENDER
-========================= */
+  */
 
 function render(){
 
   css();
+
+  syncDoneFromReps();
 
   $("#title").textContent=
     state.title||defaults.title;
@@ -569,7 +1020,34 @@ function render(){
     pct+"%";
 
   $("#bar").style.width=
-    pct+"%";
+    Math.min(100,pct)+"%";
+
+
+  /*
+    Статистика сегодняшнего дня.
+    Так как приложение не хранит календарную
+    дату старта, используем текущий день
+    месяца, ограниченный количеством дней.
+  */
+
+  const today=
+    Math.min(
+      new Date().getDate(),
+      state.days
+    );
+
+  const todayReps=
+    getReps(today);
+
+  $("#todayReps").textContent=
+    todayReps+
+    " / "+
+    state.dailyPlan;
+
+  $("#todayPct").textContent=
+    getPercent(todayReps)+
+    "%";
+
 
   const grid=$("#grid");
 
@@ -577,6 +1055,7 @@ function render(){
 
   const doneSet=
     new Set(state.done);
+
 
   for(
     let d=1;
@@ -594,9 +1073,18 @@ function render(){
     b.style.borderRadius=
       shapeRadius();
 
+
+    const reps=
+      getReps(d);
+
+    const percent=
+      getPercent(reps);
+
+
     if(state.customShape){
 
       b.innerHTML=`
+
         <img
           class="shapeImg"
           src="${state.customShape}"
@@ -606,24 +1094,43 @@ function render(){
         <span class="dayMark">
           ${doneSet.has(d)?"✓":d}
         </span>
+
+        ${
+          reps>0
+            ?`<span class="dayReps">${percent}%</span>`
+            :""
+        }
+
       `;
 
     }else{
 
       b.innerHTML=`
-        <span class="dayNum">${d}</span>
+
+        <span class="dayNum">
+          ${d}
+        </span>
 
         <span class="dayMark">
           ${doneSet.has(d)?"✓":""}
         </span>
+
+        ${
+          reps>0
+            ?`<span class="dayReps">${percent}%</span>`
+            :""
+        }
+
       `;
 
     }
 
+
     b.addEventListener(
       "click",
-      ()=>toggle(d)
+      ()=>openDay(d)
     );
+
 
     grid.appendChild(b);
 
@@ -632,11 +1139,193 @@ function render(){
 }
 
 
-/* =========================
-   TOGGLE DAY
-========================= */
+/*  
+   DAY MODAL
+  */
+
+let selectedDay=null;
+
+
+function openDay(day){
+
+  selectedDay=day;
+
+  updateDayModal();
+
+  open("dayModal");
+
+}
+
+
+function updateDayModal(){
+
+  if(!selectedDay)
+    return;
+
+  const reps=
+    getReps(selectedDay);
+
+  const percent=
+    getPercent(reps);
+
+  $("#selectedDayTitle").textContent=
+    "День "+selectedDay;
+
+  $("#selectedReps").textContent=
+    reps;
+
+  $("#selectedPlan").textContent=
+    state.dailyPlan;
+
+  $("#selectedPercent").textContent=
+    percent+"%";
+
+  $("#selectedBar").style.width=
+    Math.min(100,percent)+"%";
+
+  $("#exactReps").value=
+    reps;
+
+  $("#completeDay").textContent=
+    isDayComplete(selectedDay)
+      ?"✓ День выполнен"
+      :"Отметить день выполненным";
+
+}
+
+
+function changeReps(amount){
+
+  if(!selectedDay)
+    return;
+
+  const current=
+    getReps(selectedDay);
+
+  state.dayReps[selectedDay]=
+    Math.max(
+      0,
+      current+amount
+    );
+
+  save();
+
+  syncDoneFromReps();
+
+  render();
+
+  updateDayModal();
+
+  if(
+    cloudEnabled &&
+    firebaseUser &&
+    state.room
+  ){
+
+    publishMine();
+
+  }
+
+}
+
+
+$("#minus10").onclick=()=>{
+  changeReps(-10);
+};
+
+
+$("#plus10").onclick=()=>{
+  changeReps(10);
+};
+
+
+$("#setReps").onclick=()=>{
+
+  if(!selectedDay)
+    return;
+
+  const value=
+    Math.max(
+      0,
+      Math.floor(
+        Number($("#exactReps").value)||0
+      )
+    );
+
+  state.dayReps[selectedDay]=
+    value;
+
+  save();
+
+  syncDoneFromReps();
+
+  render();
+
+  updateDayModal();
+
+  if(
+    cloudEnabled &&
+    firebaseUser &&
+    state.room
+  ){
+
+    publishMine();
+
+  }
+
+  toast(
+    "Количество сохранено"
+  );
+
+};
+
+
+$("#completeDay").onclick=()=>{
+
+  if(!selectedDay)
+    return;
+
+  state.dayReps[selectedDay]=
+    Math.max(
+      state.dailyPlan,
+      getReps(selectedDay)
+    );
+
+  syncDoneFromReps();
+
+  save();
+
+  render();
+
+  updateDayModal();
+
+  if(
+    cloudEnabled &&
+    firebaseUser &&
+    state.room
+  ){
+
+    publishMine();
+
+  }
+
+  toast(
+    "День выполнен"
+  );
+
+};
+
+
+/*  
+   TOGGLE OLD MANUAL STATE
+  */
 
 async function toggle(d){
+
+  /*
+    Оставлено для совместимости
+    со старым прогрессом.
+  */
 
   const i=
     state.done.indexOf(d);
@@ -671,9 +1360,9 @@ async function toggle(d){
 }
 
 
-/* =========================
+/*  
    MODALS
-========================= */
+  */
 
 function open(id){
 
@@ -730,9 +1419,9 @@ document
   );
 
 
-/* =========================
+/*  
    SETTINGS
-========================= */
+  */
 
 function syncForm(){
 
@@ -742,6 +1431,9 @@ function syncForm(){
   $("#daysInput").value=
     state.days;
 
+  $("#dailyPlanInput").value=
+    state.dailyPlan;
+
   $("#shapeSelect").value=
     state.shape;
 
@@ -750,6 +1442,9 @@ function syncForm(){
 
   $("#pendingColor").value=
     state.pendingColor;
+
+  $("#nameInput").value=
+    state.personName||"";
 
 }
 
@@ -782,11 +1477,57 @@ $("#daysInput").onchange=e=>{
       x=>x<=state.days
     );
 
+  Object.keys(state.dayReps)
+    .forEach(d=>{
+
+      if(+d>state.days)
+        delete state.dayReps[d];
+
+    });
+
   save();
+
   render();
 
-  if(state.room)
+  if(
+    state.room &&
+    cloudEnabled
+  ){
+
     publishMine();
+
+  }
+
+};
+
+
+$("#dailyPlanInput").onchange=e=>{
+
+  state.dailyPlan=
+    Math.max(
+      1,
+      Math.min(
+        10000,
+        Math.floor(
+          +e.target.value||100
+        )
+      )
+    );
+
+  syncDoneFromReps();
+
+  save();
+
+  render();
+
+  if(
+    state.room &&
+    cloudEnabled
+  ){
+
+    publishMine();
+
+  }
 
 };
 
@@ -828,17 +1569,26 @@ $("#resetBtn").onclick=()=>{
 
   if(
     confirm(
-      "Сбросить все мои выполненные дни?"
+      "Сбросить все мои выполненные дни и повторения?"
     )
   ){
 
     state.done=[];
 
+    state.dayReps={};
+
     save();
+
     render();
 
-    if(state.room)
+    if(
+      state.room &&
+      cloudEnabled
+    ){
+
       publishMine();
+
+    }
 
     toast(
       "Прогресс сброшен"
@@ -858,9 +1608,9 @@ $("#installBtn").onclick=()=>{
 };
 
 
-/* =========================
+/*  
    DRAWING
-========================= */
+  */
 
 const canvas=
   $("#canvas");
@@ -914,13 +1664,6 @@ function p(e){
 function begin(e){
 
   e.preventDefault();
-
-  /*
-    ВАЖНО:
-    если до этого было выбрано сердце/звезда/цветок,
-    начинаем новый собственный рисунок.
-    Старый SVG больше не должен использоваться.
-  */
 
   state.customShape=null;
 
@@ -1213,9 +1956,9 @@ function svgPath(points){
 }
 
 
-/* =========================
+/*  
    PRESET SVG
-========================= */
+  */
 
 const presetSVG={
 
@@ -1334,11 +2077,6 @@ $("#clear").onclick=()=>{
 
 $("#save").onclick=()=>{
 
-  /*
-    Если есть нарисованные точки —
-    всегда сохраняем именно собственный рисунок.
-  */
-
   if(pts.length>=3){
 
     const s=
@@ -1377,9 +2115,9 @@ $("#save").onclick=()=>{
 };
 
 
-/* =========================
+/*  
    DUO MODE
-========================= */
+  */
 
 let roomUnsub=null;
 
@@ -1394,6 +2132,10 @@ function renderDuo(){
     !!state.room ||
     $("#duoToggle").checked
   );
+
+  $("#nameInput").value=
+    state.personName||"";
+
 
   if(state.room){
 
@@ -1440,6 +2182,41 @@ $("#duoToggle").onchange=()=>{
 };
 
 
+/*  
+   NAME
+  */
+
+$("#nameSave").onclick=async()=>{
+
+  const name=
+    $("#nameInput").value
+      .trim()
+      .slice(0,30);
+
+  state.personName=
+    name;
+
+  save();
+
+  if(
+    cloudEnabled &&
+    firebaseUser &&
+    state.room
+  ){
+
+    await publishMine();
+
+  }
+
+  toast(
+    name
+      ?"Имя сохранено"
+      :"Имя очищено"
+  );
+
+};
+
+
 function randomCode(){
 
   return Math.random()
@@ -1457,9 +2234,9 @@ function myId(){
 }
 
 
-/* =========================
+/*  
    PUBLISH
-========================= */
+  */
 
 async function publishMine(){
 
@@ -1492,9 +2269,17 @@ async function publishMine(){
       ),
       {
         name:personName,
+
         done:state.done,
+
+        dayReps:state.dayReps,
+
         days:state.days,
+
+        dailyPlan:state.dailyPlan,
+
         updatedAt:Date.now()
+
       }
     );
 
@@ -1510,9 +2295,9 @@ async function publishMine(){
 }
 
 
-/* =========================
+/*  
    WATCH ROOM
-========================= */
+  */
 
 function watchRoom(){
 
@@ -1545,18 +2330,70 @@ function watchRoom(){
 
         box.innerHTML="";
 
+
         Object.entries(people)
           .forEach(
             ([id,p])=>{
 
-              const d=
+              const dayReps=
+                p.dayReps &&
+                typeof p.dayReps==="object"
+                  ?p.dayReps
+                  :{};
+
+
+              const repsValues=
+                Object.values(dayReps)
+                  .map(
+                    x=>Number(x)||0
+                  );
+
+
+              const totalReps=
+                repsValues.reduce(
+                  (a,b)=>a+b,
+                  0
+                );
+
+
+              const daysDone=
                 Array.isArray(p.done)
                   ?p.done.length
                   :0;
 
+
               const total=
                 p.days||
                 state.days;
+
+
+              const plan=
+                p.dailyPlan||
+                state.dailyPlan;
+
+
+              /*
+                Показываем сегодняшнюю
+                статистику относительно
+                текущего дня месяца.
+              */
+
+              const today=
+                Math.min(
+                  new Date().getDate(),
+                  total
+                );
+
+
+              const todayReps=
+                Number(dayReps[today])||0;
+
+
+              const todayPercent=
+                Math.round(
+                  todayReps/plan*100
+                );
+
 
               const el=
                 document.createElement(
@@ -1565,6 +2402,7 @@ function watchRoom(){
 
               el.className=
                 "person";
+
 
               el.innerHTML=`
 
@@ -1576,21 +2414,26 @@ function watchRoom(){
                 </div>
 
                 <div class="personScore">
-                  ${d} / ${total}
+                  ${daysDone} / ${total} дней
+                </div>
+
+                <div class="personToday">
+                  Сегодня: ${todayReps} / ${plan}
+                  (${todayPercent}%)
                 </div>
 
                 <div class="small">
-                  ${Math.round(
-                    d/total*100
-                  )}% выполнено
+                  Всего повторений: ${totalReps}
                 </div>
 
               `;
+
 
               box.appendChild(el);
 
             }
           );
+
 
         $("#cloudStatus").textContent=
           "Синхронизация включена";
@@ -1630,9 +2473,9 @@ function escapeHtml(s){
 }
 
 
-/* =========================
+/*  
    ENTER ROOM
-========================= */
+  */
 
 async function enterRoom(code){
 
@@ -1696,9 +2539,9 @@ async function enterRoom(code){
 }
 
 
-/* =========================
+/*  
    CREATE ROOM
-========================= */
+  */
 
 $("#createBtn").onclick=
   async()=>{
@@ -1723,9 +2566,9 @@ $("#createBtn").onclick=
   };
 
 
-/* =========================
+/*  
    JOIN ROOM
-========================= */
+  */
 
 $("#joinBtn").onclick=()=>{
 
@@ -1736,9 +2579,9 @@ $("#joinBtn").onclick=()=>{
 };
 
 
-/* =========================
+/*  
    COPY
-========================= */
+  */
 
 $("#copyBtn").onclick=
   async()=>{
@@ -1764,9 +2607,9 @@ $("#copyBtn").onclick=
   };
 
 
-/* =========================
+/*  
    START APP IMMEDIATELY
-========================= */
+  */
 
 render();
 
@@ -1775,9 +2618,9 @@ renderDuo();
 syncForm();
 
 
-/* =========================
+/*  
    FIREBASE IN BACKGROUND
-========================= */
+  */
 
 firebaseReady=
   initFirebase()
